@@ -2,8 +2,21 @@
 <splat>
 	<menubar>
 		<menu name="File">
+			<item type="placeholder"/>
+			<item type="placeholder"/>
+			<item type="separator"/>
+			<item type="placeholder"/>
+			<item type="placeholder"/>
+			<item type="separator"/>
+			<item type="placeholder"/>
+			<item type="placeholder"/>
 		</menu>
 		<menu name="Edit">
+			<item type="placeholder"/>
+			<item type="placeholder"/>
+			<item type="placeholder"/>
+			<item type="separator"/>
+			<item type="placeholder"/>
 		</menu>
 	</menubar>
 	<actions>
@@ -23,25 +36,25 @@
 			<name>Save</name>
 			<shortcut>262259</shortcut>
 			<menu>0</menu>
-			<postion>2</postion>
+			<postion>3</postion>
 		</fileio_save>
 		<fileio_save-as>
 			<name>Save As</name>
 			<shortcut>393331</shortcut>
 			<menu>0</menu>
-			<postion>3</postion>
+			<postion>4</postion>
 		</fileio_save-as>
 		<fileio_close>
 			<name>Close</name>
 			<shortcut>262263</shortcut>
 			<menu>0</menu>
-			<postion>4</postion>
+			<postion>6</postion>
 		</fileio_close>
 		<fileio_quit>
 			<name>Quit</name>
 			<shortcut>262257</shortcut>
 			<menu>0</menu>
-			<postion>5</postion>
+			<postion>7</postion>
 		</fileio_quit>
 
 		<basicedits_cut>
@@ -69,7 +82,7 @@
 			<name>Select All</name>
 			<shortcut>262241</shortcut>
 			<menu>1</menu>
-			<postion>3</postion>
+			<postion>4</postion>
 			<popup>3</popup>
 		</basicedits_select-all>
 	</actions>

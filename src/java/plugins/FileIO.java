@@ -76,7 +76,7 @@ public class FileIO implements SplatAPI
 					if (!editor.getSavedState())
 					{
 						MessageBox alert = new MessageBox(shell, SWT.CANCEL|SWT.NO|SWT.YES);
-	//					alert.setText("");
+//						alert.setText("");
 						alert.setMessage("Save Changes to \"" + editor.getName() + "\" before closing?");
 
 						switch (alert.open())
