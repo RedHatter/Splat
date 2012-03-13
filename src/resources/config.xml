@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<splat>
+	<menubar>
+		<menu name="File">
+		</menu>
+		<menu name="Edit">
+		</menu>
+	</menubar>
+	<actions>
+		<fileio_new>
+			<name>New</name>
+			<shortcut>262254</shortcut>
+			<menu>0</menu>
+			<postion>0</postion>
+		</fileio_new>
+		<fileio_open>
+			<name>Open</name>
+			<shortcut>262255</shortcut>
+			<menu>0</menu>
+			<postion>1</postion>
+		</fileio_open>
+		<fileio_save>
+			<name>Save</name>
+			<shortcut>262259</shortcut>
+			<menu>0</menu>
+			<postion>2</postion>
+		</fileio_save>
+		<fileio_save-as>
+			<name>Save As</name>
+			<shortcut>393331</shortcut>
+			<menu>0</menu>
+			<postion>3</postion>
+		</fileio_save-as>
+		<fileio_close>
+			<name>Close</name>
+			<shortcut>262263</shortcut>
+			<menu>0</menu>
+			<postion>4</postion>
+		</fileio_close>
+		<fileio_quit>
+			<name>Quit</name>
+			<shortcut>262257</shortcut>
+			<menu>0</menu>
+			<postion>5</postion>
+		</fileio_quit>
+
+		<basicedits_cut>
+			<name>Cut</name>
+			<shortcut>262264</shortcut>
+			<menu>1</menu>
+			<postion>0</postion>
+			<popup>0</popup>
+		</basicedits_cut>
+		<basicedits_copy>
+			<name>Copy</name>
+			<shortcut>262243</shortcut>
+			<menu>1</menu>
+			<postion>1</postion>
+			<popup>1</popup>
+		</basicedits_copy>
+		<basicedits_paste>
+			<name>Paste</name>
+			<shortcut>262262</shortcut>
+			<menu>1</menu>
+			<postion>2</postion>
+			<popup>2</popup>
+		</basicedits_paste>
+		<basicedits_select-all>
+			<name>Select All</name>
+			<shortcut>262241</shortcut>
+			<menu>1</menu>
+			<postion>3</postion>
+			<popup>3</popup>
+		</basicedits_select-all>
+	</actions>
+</splat>

@@ -1,0 +1,59 @@
+
+  Splat is Copyright (C) 2012 Christian Johnson
+
+
+  Disclaimer:
+    This is a pre alpha version, there is no guarantee
+    that it won't decide to use your computer as a 
+    virgin sacrifice to the gods of chaos.
+
+=======
+
+  Splat is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Splat is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+=======
+
+
+                       INSTALLING SPLAT
+
+Splat can be compiled and ran on Linux, Mac OS X, and Windows. At
+the moment no install packages are available, see "packaging" for manual
+install instructions
+
+
+Running
+-------
+From tar-ball:
+  Extract tar-ball into desired location, and run the fallowing command.
+    'java -Djava.library.path=./ -jar Splat-0.0.0.jar'
+
+From source:
+  From root directory run the fallowing command. Note: requires buildr
+  to be installed.
+    'buildr run'
+
+
+Compiling
+---------
+From root directory run the fallowing command. Will compile into 'target'
+Note: requires buildr to be installed.
+  'buildr compile'
+
+Packaging
+---------
+To build a tar-ball, from root directory run the fallowing command. Will
+build into 'target'. See 'Running' for instruction to run from tar-ball.
+Note: requires buildr to be installed.
+  'buildr package'
+

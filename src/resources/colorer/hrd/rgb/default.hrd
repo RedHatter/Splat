@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!DOCTYPE hrd PUBLIC "-//Cail Lomecb//DTD Colorer HRD take5//EN"
+  "http://colorer.sf.net/2003/hrd.dtd">
+<hrd xmlns="http://colorer.sf.net/2003/hrd">
+
+  <assign name="def:Text"   fore="#000000" back="#ffffff"/>
+  <assign name="def:HorzCross" fore="#000000" back="#e1ebe0"/>
+  <assign name="def:VertCross" fore="#000000" back="#e1ebe0"/>
+
+  <assign name="def:Number" fore="#AA00AA"/>
+
+  <assign name="def:String" fore="#FF00FF"/>
+
+  <assign name="def:Comment" fore="#008800"/>
+  <assign name="def:CommentDoc" fore="#00ff00"/>
+
+  <assign name="def:Symbol" fore="#808030"/>
+  <assign name="def:SymbolStrong" fore="#800080"/>
+  <assign name="def:Prefix" fore="#666616"/>
+  <assign name="def:PrefixStrong" fore="#007997"/>
+
+  <assign name="def:Operator" fore="#4O4aadd"/>
+
+  <assign name="def:Keyword" fore="#AA2222" style='1'/>
+  <assign name="java:KeywordModifier" fore="#335522" style='1'/>
+  <assign name="def:KeywordStrong" fore="#bb7977" style='1'/>
+  <assign name="def:FunctionKeyword" fore="#400000"/>
+  <assign name="def:DeprecatedKeyword" fore="#008484"/>
+  <assign name="def:InterfaceKeyword" fore="#008484"/>
+  <assign name="def:ClassKeyword" fore="#0077BB"/>
+  <assign name="def:StructKeyword" fore="#335522"/>
+  <assign name="def:TypeKeyword" fore="#0077BB" style='1'/>
+
+  <assign name="def:Function"/>
+  <assign name="def:Register" fore="#000080"/>
+  <assign name="def:Constant" fore="#7d0045"/>
+  <assign name="def:Var" fore="#797997"/>
+  <assign name="def:VarStrong" fore="#007997"/>
+  <assign name="def:Identifier" fore="#005fd2"/>
+  <assign name="def:BooleanConstant" fore="#0f4d75"/>
+
+  <assign name="def:Directive" fore="#999999"/>
+  <assign name="def:Parameter" fore="#074726"/>
+  <assign name="def:ParameterUnknown" fore="#274796"/>
+
+  <assign name="def:Tag" fore="#5f5035"/>
+  <assign name="def:OpenTag" fore="#a65700"/>
+  <assign name="def:CloseTag" fore="#a65700"/>
+
+  <assign name="def:Label" fore="#e34adc"/>
+  <assign name="def:LabelStrong" fore="#000000" back="#a8a800"/>
+
+  <assign name="def:Insertion" fore="#000000" back="#ffffe8"/>
+  <assign name="def:InsertionStart" fore="#800000" back="#ffffa4"/>
+  <assign name="def:InsertionEnd" fore="#800000" back="#ffffa4"/>
+
+  <assign name="def:Error" fore="#ffffff" back="#dd0000" style='3'/>
+  <assign name="def:ErrorText" fore="#ee00ee"/>
+
+  <assign name="def:TODO" fore="#ffffff" back="#9999FF"/>
+  <assign name="def:Debug" fore="#80abfd" back="#007084"/>
+
+  <assign name="def:Path" fore="#40015a"/>
+  <assign name="def:URL" fore="#5555DD"/>
+  <assign name="def:EMail" fore="#7144c4"/>
+
+  <assign name="def:Date" fore="#009797"/>
+  <assign name="def:Time" fore="#8745a0"/>
+
+  <assign name="def:PairStart" fore="#999999"/>
+  <assign name="def:PairEnd" fore="#999999" />
+  <assign name="def:PairStrongStart" fore="#000000"/>
+  <assign name="def:PairStrongEnd" fore="#000000"/>
+
+</hrd>
