@@ -22,7 +22,6 @@ package com.digitaltea.splat.plugins.actionshandler;
 import com.digitaltea.splat.plugins.*;
 import com.digitaltea.splat.core.CoreAPI;
 
-//Loaded from plugin framework library (jspf), needed to imlement plugin
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.*;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;

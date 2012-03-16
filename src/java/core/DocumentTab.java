@@ -79,8 +79,6 @@ public class DocumentTab extends StyledText
 
 		setFont(new Font(parent.getDisplay(), defaultFont, 13, SWT.NORMAL));
 
-		setSavedState(false);
-
 		addModifyListener(new ModifyListener()
 		{
 			public void modifyText(ModifyEvent e)

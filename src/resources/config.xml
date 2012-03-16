@@ -14,6 +14,9 @@
 		<menu name="Edit">
 			<item type="placeholder"/>
 			<item type="placeholder"/>
+			<item type="separator"/>
+			<item type="placeholder"/>
+			<item type="placeholder"/>
 			<item type="placeholder"/>
 			<item type="separator"/>
 			<item type="placeholder"/>
@@ -57,33 +60,47 @@
 			<postion>7</postion>
 		</fileio_quit>
 
+		<undomanager_undo>
+			<name>Undo</name>
+			<shortcut>262266</shortcut>
+			<menu>1</menu>
+			<postion>0</postion>
+			<popup>0</popup>
+		</undomanager_undo>
+		<undomanager_redo>
+			<name>Redo</name>
+			<shortcut>393338</shortcut>
+			<menu>1</menu>
+			<postion>1</postion>
+			<popup>1</popup>
+		</undomanager_redo>
 		<basicedits_cut>
 			<name>Cut</name>
 			<shortcut>262264</shortcut>
 			<menu>1</menu>
-			<postion>0</postion>
-			<popup>0</popup>
+			<postion>3</postion>
+			<popup>2</popup>
 		</basicedits_cut>
 		<basicedits_copy>
 			<name>Copy</name>
 			<shortcut>262243</shortcut>
 			<menu>1</menu>
-			<postion>1</postion>
-			<popup>1</popup>
+			<postion>4</postion>
+			<popup>3</popup>
 		</basicedits_copy>
 		<basicedits_paste>
 			<name>Paste</name>
 			<shortcut>262262</shortcut>
 			<menu>1</menu>
-			<postion>2</postion>
-			<popup>2</popup>
+			<postion>5</postion>
+			<popup>4</popup>
 		</basicedits_paste>
 		<basicedits_select-all>
 			<name>Select All</name>
 			<shortcut>262241</shortcut>
 			<menu>1</menu>
-			<postion>4</postion>
-			<popup>3</popup>
+			<postion>7</postion>
+			<popup>5</popup>
 		</basicedits_select-all>
 	</actions>
 </splat>
