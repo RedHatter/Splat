@@ -23,6 +23,7 @@
 		</menu>
 		<menu name="Search">
 			<item type="placeholder"/>
+			<item type="placeholder"/>
 		</menu>
 	</menubar>
 	<actions>
@@ -112,5 +113,11 @@
 			<menu>2</menu>
 			<postion>0</postion>
 		</search_find>
+		<search_replace>
+			<name>Replace</name>
+			<shortcut>262248</shortcut>
+			<menu>2</menu>
+			<postion>1</postion>
+		</search_replace>
 	</actions>
 </splat>

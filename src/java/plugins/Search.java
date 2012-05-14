@@ -1,5 +1,5 @@
 /*************************************************************************
- *  FileIO.java
+ *  Search.java
  *  This file is part of Splat.
  *
  *  Copyright (C) 2012 Christian Johnson
@@ -33,9 +33,11 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -70,6 +72,17 @@ public class Search implements SplatAPI
 				return "search_find";
 			}
 		});
+
+		actions.add(new PluginAction() {
+			public void execute()
+			{
+				openReplaceDialog();
+			}
+			public String getId()
+			{
+				return "search_replace";
+			}
+		});
 		return actions;
 	}
 
@@ -89,19 +102,33 @@ public class Search implements SplatAPI
 		gridData.horizontalSpan = 3;
 		searchI.setLayoutData(gridData);
 
-		final Button regex = new Button(findDialog, SWT.CHECK);
-		regex.setText("Regex");
+		Group group = new Group(findDialog, SWT.NONE);
+		group.setText("Search Type");
+		RowLayout rowLayout = new RowLayout();
+                rowLayout.type = SWT.VERTICAL;
+		group.setLayout(rowLayout);
 		gridData = new GridData();
-		gridData.horizontalSpan = 4;
-		regex.setLayoutData(gridData);
+		gridData.horizontalSpan = 2;
+		gridData.verticalSpan = 3;
+		group.setLayoutData(gridData);
+
+		Button button = new Button(group, SWT.RADIO);
+		button.setText("Normal");
+		button.setSelection(true);
+
+		button = new Button(group, SWT.RADIO);
+		button.setText("Extended (\\n, \\r, \\t, \\0, \\x ...)");
+
+		final Button regex = new Button(group, SWT.RADIO);
+		regex.setText("Regular expression");
 
 		final Button mCase = new Button(findDialog, SWT.CHECK);
 		mCase.setText("Match case");
 		gridData = new GridData();
-		gridData.horizontalSpan = 4;
+		gridData.horizontalSpan = 2;
 		mCase.setLayoutData(gridData);
 
-		Button button = new Button(findDialog, SWT.PUSH);
+		button = new Button(findDialog, SWT.PUSH);
 		button.setText("Close");
 		button.addSelectionListener(new SelectionAdapter()
 		{
@@ -172,6 +199,164 @@ public class Search implements SplatAPI
 
 		findDialog.pack();
 		findDialog.open();
+	}
+
+
+	private void openReplaceDialog()
+	{
+		final Shell replaceDialog = new Shell(core.getShell().getDisplay(), SWT.DIALOG_TRIM);
+		GridLayout layout = new GridLayout(4, true);
+		layout.marginHeight = 15;
+		layout.marginWidth = 15;
+		replaceDialog.setLayout(layout);
+
+		new Label(replaceDialog, SWT.NONE).setText("Search for:");
+
+		final Text searchI = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		searchI.setLayoutData(gridData);
+
+
+		new Label(replaceDialog, SWT.NONE).setText("Replace with:");
+
+		final Text replaceText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		replaceText.setLayoutData(gridData);
+
+		Group group = new Group(replaceDialog, SWT.NONE);
+		group.setText("Search Type");
+		RowLayout rowLayout = new RowLayout();
+                rowLayout.type = SWT.VERTICAL;
+		group.setLayout(rowLayout);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		group.setLayoutData(gridData);
+
+		Button button = new Button(group, SWT.RADIO);
+		button.setText("Normal");
+		button.setSelection(true);
+
+		button = new Button(group, SWT.RADIO);
+		button.setText("Extended (\\n, \\r, \\t, \\0, \\x ...)");
+
+		Button regex = new Button(group, SWT.RADIO);
+		regex.setText("Regular expression");
+
+		group = new Group(replaceDialog, SWT.NONE);
+		group.setText("Search Area");
+		rowLayout = new RowLayout();
+                rowLayout.type = SWT.VERTICAL;
+		group.setLayout(rowLayout);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		group.setLayoutData(gridData);
+
+		button = new Button(group, SWT.RADIO);
+		button.setText("Current document");
+		button.setSelection(true);
+
+		button = new Button(group, SWT.RADIO);
+		button.setText("Selection");
+
+		button = new Button(group, SWT.RADIO);
+		button.setText("All open documents");
+
+		final Button mCase = new Button(replaceDialog, SWT.CHECK);
+		mCase.setText("Match case");
+		gridData = new GridData();
+		gridData.horizontalSpan = 4;
+		mCase.setLayoutData(gridData);
+
+		regex.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (mCase.isEnabled())
+					mCase.setEnabled(false);
+				else
+					mCase.setEnabled(true);
+			}
+		});
+
+		button = new Button(replaceDialog, SWT.PUSH);
+		button.setText("Close");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				replaceDialog.dispose();	
+			}
+		});
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		button.setLayoutData(gridData);
+
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		button.setLayoutData(gridData);
+
+		button = new Button(replaceDialog, SWT.PUSH);
+		button.setText("Replace All");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+//				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), true);
+			}
+		});
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		button.setLayoutData(gridData);
+
+		final Button prevButton = new Button(replaceDialog, SWT.PUSH);
+		prevButton.setText("Replace");
+		prevButton.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+//				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), false);
+			}
+		});
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		prevButton.setLayoutData(gridData);
+
+/*		regex.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (prevButton.isEnabled())
+				{
+					prevButton.setEnabled(false);
+					mCase.setEnabled(false);
+				}
+				else
+				{
+					prevButton.setEnabled(true);
+					mCase.setEnabled(true);
+				}
+			}
+		});
+*/
+		button = new Button(replaceDialog, SWT.PUSH);
+		button.setText("Find");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+//				CountButton.setText(Integer.toString(count(searchI.getText(), regex.getSelection(), mCase.getSelection())));
+			}
+		});
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		button.setLayoutData(gridData);
+
+		replaceDialog.pack();
+		replaceDialog.open();
 	}
 
 	private int count(String search, boolean regex, boolean mCase)
