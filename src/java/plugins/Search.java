@@ -51,8 +51,6 @@ public class Search implements SplatAPI
 	@InjectPlugin
 	public CoreAPI core;
 
-	private Matcher matcher;
-
 	@Init
 	public boolean init()
 	{
@@ -131,7 +129,7 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), true);
+				find(searchText.getText(), regex.getSelection(), mCase.getSelection(), true, 1);
 			}
 		});
 		gridData = new GridData();
@@ -144,7 +142,7 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), false);
+				find(searchText.getText(), regex.getSelection(), mCase.getSelection(), false, 1);
 			}
 		});
 		gridData = new GridData();
@@ -155,15 +153,15 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				if (prevButton.isEnabled())
+				if (mCase.isEnabled())
 				{
-					prevButton.setEnabled(false);
+					mCase.setSelection(true);
 					mCase.setEnabled(false);
-				}
-				else
+					prevButton.setEnabled(false);
+				} else
 				{
-					prevButton.setEnabled(true);
 					mCase.setEnabled(true);
+					prevButton.setEnabled(true);
 				}
 			}
 		});
@@ -237,14 +235,11 @@ public class Search implements SplatAPI
 		button.setText("Normal");
 		button.setSelection(true);
 
-		button = new Button(group, SWT.RADIO);
-		button.setText("Back referenses");
-
 		final Button regex = new Button(group, SWT.RADIO);
 		regex.setText("Regular expression");
 
 		group = new Group(replaceDialog, SWT.NONE);
-		group.setText("Search area");
+		group.setText("Search context");
 		rowLayout = new RowLayout();
                 rowLayout.type = SWT.VERTICAL;
 		group.setLayout(rowLayout);
@@ -256,11 +251,11 @@ public class Search implements SplatAPI
 		button.setText("Current document");
 		button.setSelection(true);
 
-		button = new Button(group, SWT.RADIO);
-		button.setText("Selection");
+		final Button selContext = new Button(group, SWT.RADIO);
+		selContext.setText("Selection");
 
-		button = new Button(group, SWT.RADIO);
-		button.setText("All open documents");
+		final Button allContext = new Button(group, SWT.RADIO);
+		allContext.setText("All open documents");
 
 		final Button mCase = new Button(replaceDialog, SWT.CHECK);
 		mCase.setText("Match case");
@@ -273,9 +268,13 @@ public class Search implements SplatAPI
 			public void widgetSelected(SelectionEvent e)
 			{
 				if (mCase.isEnabled())
+				{
+					mCase.setSelection(true);
 					mCase.setEnabled(false);
-				else
+				} else
+				{
 					mCase.setEnabled(true);
+				}
 			}
 		});
 
@@ -302,7 +301,15 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				replaceAll(searchText.getText(), replaceText.getText(), regex.getSelection(), mCase.getSelection());
+				int context;
+				if (selContext.getSelection() == true)
+					context = 2;
+				else if (allContext.getSelection() == true)
+					context = 3;
+				else
+					context = 1;
+
+				replaceAll(searchText.getText(), replaceText.getText(), regex.getSelection(), mCase.getSelection(), context);
 			}
 		});
 		gridData = new GridData();
@@ -328,7 +335,15 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), true);
+				int context;
+				if (selContext.getSelection() == true)
+					context = 2;
+				else if (allContext.getSelection() == true)
+					context = 3;
+				else
+					context = 1;
+
+				find(searchText.getText(), regex.getSelection(), mCase.getSelection(), true, context);
 			}
 		});
 		gridData = new GridData();
@@ -372,29 +387,76 @@ public class Search implements SplatAPI
 		return count;
 	}
 
-	private void replaceAll(String searchText, String replaceText, boolean regex, boolean mCase)
+	private void replaceAll(String searchText, String replaceText, boolean regex, boolean mCase, int context)
 	{
 		DocumentTab editor = core.getTabbedEditor().getEditor();
-		String text = editor.getText();
+		String text = "";
+		String newText = "";
+
+		switch (context)
+		{
+			case 1:
+				text = editor.getText();
+				break;
+			case 2:
+				text = editor.getSelectionText();
+				break;
+			case 3:
+				DocumentTab[] editors = core.getTabbedEditor().getEditors();
+				for (DocumentTab e : editors)
+				{
+					e.setActive();
+					replaceAll(searchText, replaceText, regex, mCase, 1);
+				}
+
+				break;
+		}
+
+		if (!mCase)
+		{
+			text = text.toLowerCase();
+			searchText = searchText.toLowerCase();
+		}
 
 		if (regex)
 		{
-			if (matcher == null || !matcher.pattern().pattern().equals(searchText))
-				matcher = Pattern.compile(searchText).matcher(text);
+			Matcher matcher = Pattern.compile(searchText).matcher(text);
 
-			text = matcher.replaceAll(replaceText);
+			newText = matcher.replaceAll(replaceText);
 		} else
 		{
-			text = text.replace(searchText, replaceText);
+			newText = text.replace(searchText, replaceText);
 		}
 
-		editor.setText(text);
+		switch (context)
+		{
+			case 1:
+				if (!newText.equals(text))
+					editor.setText(newText);
+				break;
+			case 2:
+				editor.insert(newText);
+				break;
+		}
 	}
 
-	private int findNext(String search, boolean regex, boolean mCase, boolean down)
+	private int find(String search, boolean regex, boolean mCase, boolean down, int context)
 	{
 		DocumentTab editor = core.getTabbedEditor().getEditor();
-		String text = editor.getText();
+		String text = "";
+		int caret = 0;
+
+		switch (context)
+		{
+			case 1: case 3:
+				text = editor.getText();
+				caret = editor.getCaretOffset();
+				break;
+			case 2:
+				text = editor.getSelectionText();
+				caret = 0;
+				break;
+		}
 
 		if (!mCase)
 		{
@@ -407,31 +469,52 @@ public class Search implements SplatAPI
 
 		if (regex)
 		{
-			if (matcher == null || !matcher.pattern().pattern().equals(search))
-				matcher = Pattern.compile(search).matcher(text);
+			Matcher matcher = Pattern.compile(search).matcher(text);
 
-			if (matcher.find())
+			if (matcher.find(caret))
 			{
 				start = matcher.start();
 				end = matcher.end();
 			} else
 			{
-				return -1;
+				start = -1;
+				end = 0;
 			}
 		} else
 		{
 			if (down)
 			{
-				start = text.indexOf(search, editor.getCaretOffset());
+				start = text.indexOf(search, caret);
 				end = start + search.length();
 			} else
 			{
-				start = text.lastIndexOf(search, editor.getCaretOffset()-1-search.length());
+				start = text.lastIndexOf(search, caret-1-search.length());
 				end = start + search.length();
 			}
 		}
 		if (start != -1)
+		{
+			if (context == 2)
+			{
+				int offset = editor.getSelectionRanges()[0];
+				start += offset;
+				end += offset;
+			}
+
 			editor.setSelection(start, end);
+		} else if (context == 3)
+		{
+			editor.setCaretOffset(0);
+			DocumentTab[] editors = core.getTabbedEditor().getEditors();
+			for (int i = 0; i < editors.length; i++)
+			{
+				if (editors[i] == editor)
+				{
+					editors[(i+1 < editors.length) ? i+1 : 0].setActive();
+					break;
+				}
+			}
+		}
 
 		return start;
 	}

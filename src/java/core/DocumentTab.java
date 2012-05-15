@@ -130,4 +130,9 @@ public class DocumentTab extends StyledText
 	{
 		colorer.chooseFileType(type);
 	}
+
+	public void setActive()
+	{
+		item.getParent().setSelection(item);
+	}
 }
