@@ -38,14 +38,15 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.io.File;
 
 public class TabbedEditor
 {
 	private TabFolder tabFolder;
 	private Menu popup;
-	private TabItem prvSelection;
+	private List<NewTabListener> newTabListeners = new ArrayList<NewTabListener>();
 
 	public TabbedEditor(Composite parent)
         {
@@ -81,21 +82,21 @@ public class TabbedEditor
 			event.item = tabFolder.getSelection()[0];
 			tabFolder.notifyListeners(SWT.Selection, event);
 		}
+
+		NewTabEvent e = new NewTabEvent(this, editor);
+
+		int size = newTabListeners.size();
+
+		for (int i = 0; i < size; i++)
+		{
+			NewTabListener listener = newTabListeners.get(i);
+			listener.newTab(e);
+		}
 	}
 
 	public void closeTab()
 	{
 		tabFolder.getSelection()[0].dispose();
-	}
-
-	public void setMenu(Menu menu)
-	{
-		popup = menu;
-		TabItem[] items = tabFolder.getItems();
-		for (TabItem item : items)
-		{
-			item.getControl().setMenu(menu);
-		}
 	}
 
 	public DocumentTab getEditor()
@@ -113,5 +114,15 @@ public class TabbedEditor
 		}
 
 		return editors;
+	}
+
+	public void addNewTabListener(NewTabListener listener)
+	{
+		newTabListeners.add(listener);
+	}
+
+	public void removeNewTabListener(NewTabListener listener)
+	{
+		newTabListeners.remove(listener);
 	}
 }

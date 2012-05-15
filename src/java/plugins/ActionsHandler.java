@@ -21,6 +21,8 @@ package com.digitaltea.splat.plugins.actionshandler;
 
 import com.digitaltea.splat.plugins.*;
 import com.digitaltea.splat.core.CoreAPI;
+import com.digitaltea.splat.core.coreplugin.NewTabListener;
+import com.digitaltea.splat.core.coreplugin.NewTabEvent;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.*;
@@ -70,7 +72,19 @@ public class ActionsHandler implements SplatAPI
 		//Create and set menu-bar for application, and menu for popup
 		final Shell shell = core.getShell();
 		popup = new Menu(core.getShell(), SWT.POP_UP);
-		core.getTabbedEditor().setMenu(popup);
+
+		//Add popup menu to first tab
+		core.getTabbedEditor().getEditor().setMenu(popup);
+
+		//Listener to add popup ment to new tabs
+		core.getTabbedEditor().addNewTabListener(new NewTabListener()
+		{
+			public void newTab(NewTabEvent e)
+			{
+				e.editor.setMenu(popup);
+			}
+		});
+
 		Menu appMenuBar = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(appMenuBar);
 
