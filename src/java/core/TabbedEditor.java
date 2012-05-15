@@ -52,7 +52,7 @@ public class TabbedEditor
 		tabFolder = new TabFolder(parent, SWT.BORDER);
 		final Button button = new Button(tabFolder, SWT.NONE);
 		button.setText("x");
-		button.setBounds(0, 0, 20, 20);
+		button.setBounds(parent.getSize().x-30, 5, 20, 20);
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -62,34 +62,6 @@ public class TabbedEditor
 				{
 					newTab();
 				}
-			}
-		});
-
-		tabFolder.addSelectionListener(new SelectionAdapter()
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-
-				TabItem item = (TabItem)e.item;
-				Rectangle size = item.getBounds();
-
-				if (prvSelection != null && !prvSelection.isDisposed() && prvSelection.getText() != null)
-				{
-					prvSelection.setText(prvSelection.getText().trim());
-					if (tabFolder.indexOf(item) > tabFolder.indexOf(prvSelection))
-					{
-						button.setLocation(size.x+size.width-22, 5);
-					} else
-					{
-						button.setLocation(size.x+size.width+5, 5);
-					}
-				} else
-				{
-					button.setLocation(size.x+size.width+5, 5);
-				}
-				item.getControl().setFocus();
-				item.setText(item.getText()+"         ");
-				prvSelection = item;
 			}
 		});
         }
