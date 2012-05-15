@@ -96,14 +96,14 @@ public class Search implements SplatAPI
 
 		new Label(findDialog, SWT.NONE).setText("Search for:");
 
-		final Text searchI = new Text(findDialog, SWT.SINGLE|SWT.BORDER);
+		final Text searchText = new Text(findDialog, SWT.SINGLE|SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
-		searchI.setLayoutData(gridData);
+		searchText.setLayoutData(gridData);
 
 		Group group = new Group(findDialog, SWT.NONE);
-		group.setText("Search Type");
+		group.setText("Search mode");
 		RowLayout rowLayout = new RowLayout();
                 rowLayout.type = SWT.VERTICAL;
 		group.setLayout(rowLayout);
@@ -116,9 +116,6 @@ public class Search implements SplatAPI
 		button.setText("Normal");
 		button.setSelection(true);
 
-		button = new Button(group, SWT.RADIO);
-		button.setText("Extended (\\n, \\r, \\t, \\0, \\x ...)");
-
 		final Button regex = new Button(group, SWT.RADIO);
 		regex.setText("Regular expression");
 
@@ -129,25 +126,12 @@ public class Search implements SplatAPI
 		mCase.setLayoutData(gridData);
 
 		button = new Button(findDialog, SWT.PUSH);
-		button.setText("Close");
-		button.addSelectionListener(new SelectionAdapter()
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				findDialog.dispose();	
-			}
-		});
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		button.setLayoutData(gridData);
-
-		button = new Button(findDialog, SWT.PUSH);
 		button.setText("Find Next");
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), true);
+				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), true);
 			}
 		});
 		gridData = new GridData();
@@ -160,7 +144,7 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), false);
+				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), false);
 			}
 		});
 		gridData = new GridData();
@@ -190,12 +174,25 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				CountButton.setText(Integer.toString(count(searchI.getText(), regex.getSelection(), mCase.getSelection())));
+				CountButton.setText(Integer.toString(count(searchText.getText(), regex.getSelection(), mCase.getSelection())));
 			}
 		});
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		CountButton.setLayoutData(gridData);
+
+		button = new Button(findDialog, SWT.PUSH);
+		button.setText("Close");
+		button.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				findDialog.dispose();	
+			}
+		});
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		button.setLayoutData(gridData);
 
 		findDialog.pack();
 		findDialog.open();
@@ -212,11 +209,11 @@ public class Search implements SplatAPI
 
 		new Label(replaceDialog, SWT.NONE).setText("Search for:");
 
-		final Text searchI = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
+		final Text searchText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
-		searchI.setLayoutData(gridData);
+		searchText.setLayoutData(gridData);
 
 
 		new Label(replaceDialog, SWT.NONE).setText("Replace with:");
@@ -228,7 +225,7 @@ public class Search implements SplatAPI
 		replaceText.setLayoutData(gridData);
 
 		Group group = new Group(replaceDialog, SWT.NONE);
-		group.setText("Search Type");
+		group.setText("Search mode");
 		RowLayout rowLayout = new RowLayout();
                 rowLayout.type = SWT.VERTICAL;
 		group.setLayout(rowLayout);
@@ -241,13 +238,13 @@ public class Search implements SplatAPI
 		button.setSelection(true);
 
 		button = new Button(group, SWT.RADIO);
-		button.setText("Extended (\\n, \\r, \\t, \\0, \\x ...)");
+		button.setText("Back referenses");
 
-		Button regex = new Button(group, SWT.RADIO);
+		final Button regex = new Button(group, SWT.RADIO);
 		regex.setText("Regular expression");
 
 		group = new Group(replaceDialog, SWT.NONE);
-		group.setText("Search Area");
+		group.setText("Search area");
 		rowLayout = new RowLayout();
                 rowLayout.type = SWT.VERTICAL;
 		group.setLayout(rowLayout);
@@ -305,7 +302,7 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-//				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), true);
+				replaceAll(searchText.getText(), replaceText.getText(), regex.getSelection(), mCase.getSelection());
 			}
 		});
 		gridData = new GridData();
@@ -318,37 +315,20 @@ public class Search implements SplatAPI
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-//				findNext(searchI.getText(), regex.getSelection(), mCase.getSelection(), false);
+				core.getTabbedEditor().getEditor().insert(replaceText.getText());
 			}
 		});
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		prevButton.setLayoutData(gridData);
 
-/*		regex.addSelectionListener(new SelectionAdapter()
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				if (prevButton.isEnabled())
-				{
-					prevButton.setEnabled(false);
-					mCase.setEnabled(false);
-				}
-				else
-				{
-					prevButton.setEnabled(true);
-					mCase.setEnabled(true);
-				}
-			}
-		});
-*/
 		button = new Button(replaceDialog, SWT.PUSH);
 		button.setText("Find");
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-//				CountButton.setText(Integer.toString(count(searchI.getText(), regex.getSelection(), mCase.getSelection())));
+				findNext(searchText.getText(), regex.getSelection(), mCase.getSelection(), true);
 			}
 		});
 		gridData = new GridData();
@@ -392,7 +372,26 @@ public class Search implements SplatAPI
 		return count;
 	}
 
-	private void findNext(String search, boolean regex, boolean mCase, boolean down)
+	private void replaceAll(String searchText, String replaceText, boolean regex, boolean mCase)
+	{
+		DocumentTab editor = core.getTabbedEditor().getEditor();
+		String text = editor.getText();
+
+		if (regex)
+		{
+			if (matcher == null || !matcher.pattern().pattern().equals(searchText))
+				matcher = Pattern.compile(searchText).matcher(text);
+
+			text = matcher.replaceAll(replaceText);
+		} else
+		{
+			text = text.replace(searchText, replaceText);
+		}
+
+		editor.setText(text);
+	}
+
+	private int findNext(String search, boolean regex, boolean mCase, boolean down)
 	{
 		DocumentTab editor = core.getTabbedEditor().getEditor();
 		String text = editor.getText();
@@ -417,9 +416,7 @@ public class Search implements SplatAPI
 				end = matcher.end();
 			} else
 			{
-				matcher.reset();
-				findNext(search, regex, mCase, down);
-				return;
+				return -1;
 			}
 		} else
 		{
@@ -435,6 +432,8 @@ public class Search implements SplatAPI
 		}
 		if (start != -1)
 			editor.setSelection(start, end);
+
+		return start;
 	}
 
 	@Shutdown
