@@ -23,6 +23,7 @@ import com.digitaltea.splat.core.coreplugin.DocumentTab;
 
 import java.util.Deque;
 import java.util.ArrayDeque;
+import java.util.EventObject;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -32,12 +33,30 @@ import org.eclipse.swt.custom.ExtendedModifyListener;
 public class UndoHandler
 {
 	private DocumentTab editor;
-	private Deque<ExtendedModifyEvent> undoStack = new ArrayDeque<ExtendedModifyEvent>();
-	private Deque<ExtendedModifyEvent> redoStack = new ArrayDeque<ExtendedModifyEvent>();
+	private Deque<UndoEvent> undoStack = new ArrayDeque<UndoEvent>();
+	private Deque<UndoEvent> redoStack = new ArrayDeque<UndoEvent>();
 
 	private boolean lock;
 
-	public UndoHandler(DocumentTab editor)
+	private class UndoEvent extends EventObject
+	{
+		int start;
+		int length;
+		String replacedText;
+		boolean merge;
+
+		public UndoEvent(Object source, int start, int length, String replacedText, boolean merge)
+		{
+			super(source);
+
+			this.start = start;
+			this.length = length;
+			this.replacedText = replacedText;
+			this.merge = merge;
+		}
+	}
+
+	public UndoHandler(final DocumentTab editor)
 	{
 		this.editor = editor;
 		lock = false;
@@ -46,10 +65,27 @@ public class UndoHandler
 		{
 			public void modifyText(ExtendedModifyEvent e)
 			{
+				UndoEvent edit = new UndoEvent(e.getSource(), e.start, e.length, e.replacedText, false);
+
 				if (!lock)
-					undoStack.addFirst(e);
-				else
-					redoStack.addFirst(e);
+				{
+					if (edit.length == 1 && editor.getTextRange(edit.start, 1).matches("\\w"))
+					{
+						edit.merge = true;
+
+						UndoEvent prv = undoStack.peekFirst();
+						if (prv != null && prv.merge && edit.start == prv.start+prv.length)
+						{
+							edit = prv;
+							edit.length += 1;
+							undoStack.removeFirst();
+						}
+					}
+					undoStack.addFirst(edit);
+				} else
+				{
+					redoStack.addFirst(edit);
+				}
 			}
 		});
 	}
@@ -59,7 +95,7 @@ public class UndoHandler
 		if (!undoStack.isEmpty())
 		{
 			lock = true;
-			ExtendedModifyEvent edit = undoStack.removeFirst();
+			UndoEvent edit = undoStack.removeFirst();
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
 			lock = false;
@@ -70,7 +106,7 @@ public class UndoHandler
 	{
 		if (!redoStack.isEmpty())
 		{
-			ExtendedModifyEvent edit = redoStack.removeFirst();
+			UndoEvent edit = redoStack.removeFirst();
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
 		}

@@ -1,5 +1,5 @@
 /*************************************************************************
- *  ActionsHandlerPlugin.java
+ *  ActionsHandler.java
  *  This file is part of Splat.
  *
  *  Copyright (C) 2012 Christian Johnson
