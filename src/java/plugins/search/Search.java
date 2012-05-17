@@ -155,12 +155,9 @@ public class Search implements SplatAPI
 			{
 				if (mCase.isEnabled())
 				{
-					mCase.setSelection(true);
-					mCase.setEnabled(false);
 					prevButton.setEnabled(false);
 				} else
 				{
-					mCase.setEnabled(true);
 					prevButton.setEnabled(true);
 				}
 			}
@@ -262,21 +259,6 @@ public class Search implements SplatAPI
 		gridData = new GridData();
 		gridData.horizontalSpan = 4;
 		mCase.setLayoutData(gridData);
-
-		regex.addSelectionListener(new SelectionAdapter()
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				if (mCase.isEnabled())
-				{
-					mCase.setSelection(true);
-					mCase.setEnabled(false);
-				} else
-				{
-					mCase.setEnabled(true);
-				}
-			}
-		});
 
 		button = new Button(replaceDialog, SWT.PUSH);
 		button.setText("Close");
@@ -412,20 +394,24 @@ public class Search implements SplatAPI
 				break;
 		}
 
-		if (!mCase)
-		{
-			text = text.toLowerCase();
-			searchText = searchText.toLowerCase();
-		}
-
 		if (regex)
 		{
-			Matcher matcher = Pattern.compile(searchText).matcher(text);
+			Matcher matcher;
+
+			if (mCase)
+				matcher = Pattern.compile(searchText).matcher(text);
+			else
+				matcher = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE).matcher(text);
 
 			newText = matcher.replaceAll(replaceText);
 		} else
 		{
-			newText = text.replace(searchText, replaceText);
+			if (mCase)
+				newText = text.replace(searchText, replaceText);
+			else
+				newText = Pattern.compile(Pattern.quote(searchText), Pattern.CASE_INSENSITIVE)
+						.matcher(text)
+						.replaceAll(replaceText);
 		}
 
 		switch (context)
@@ -458,18 +444,17 @@ public class Search implements SplatAPI
 				break;
 		}
 
-		if (!mCase)
-		{
-			text = text.toLowerCase();
-			search = search.toLowerCase();
-		}
-
 		int start;
 		int end;
 
 		if (regex)
 		{
-			Matcher matcher = Pattern.compile(search).matcher(text);
+			Matcher matcher;
+
+			if (mCase)
+				matcher = Pattern.compile(search).matcher(text);
+			else
+				matcher = Pattern.compile(search, Pattern.CASE_INSENSITIVE).matcher(text);
 
 			if (matcher.find(caret))
 			{
@@ -482,6 +467,13 @@ public class Search implements SplatAPI
 			}
 		} else
 		{
+
+			if (!mCase)
+			{
+				text = text.toLowerCase();
+				search = search.toLowerCase();
+			}
+
 			if (down)
 			{
 				start = text.indexOf(search, caret);
