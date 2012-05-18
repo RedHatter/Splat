@@ -60,7 +60,7 @@ public class Search implements SplatAPI
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				openFindDialog();
@@ -71,7 +71,7 @@ public class Search implements SplatAPI
 			}
 		});
 
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				openReplaceDialog();

@@ -1,5 +1,5 @@
 /*************************************************************************
- *  PluginAction.java
+ *  ActionAdapter.java
  *  This file is part of Splat.
  *
  *  Copyright (C) 2012 Christian Johnson
@@ -20,14 +20,39 @@
 package com.digitaltea.splat.plugins;
 
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.MenuItem;
 
-public interface PluginAction
+import java.util.Collection;
+import java.util.ArrayList;
+
+public class ActionAdapter implements PluginAction
 {
-	public void execute();
+	private Collection<Item> items = new ArrayList<Item>();
+	private boolean enabled = true;
 
-	public String getId();
+	public void execute()
+	{
+		return;
+	}
 
-	public void setEnabled(boolean enabled);
+	public String getId()
+	{
+		return "placeholder";
+	}
 
-	public void addItem(Item item);
+	public void setEnabled(boolean enabled)
+	{
+		for (Item item : items)
+		{
+			((MenuItem)item).setEnabled(enabled);
+		}
+		this.enabled = enabled;
+	}
+
+	public void addItem(Item item)
+	{
+		items.add(item);
+		if (!enabled)
+			((MenuItem)item).setEnabled(enabled);
+	}
 }

@@ -177,6 +177,7 @@ public class ActionsHandler implements SplatAPI
 						thisAction.execute();
 					};
 				});
+				thisAction.addItem(item);
 
 				if (actionXml.contains("popup"))
 				{

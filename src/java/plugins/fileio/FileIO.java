@@ -102,7 +102,7 @@ public class FileIO implements SplatAPI
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{
@@ -113,7 +113,7 @@ public class FileIO implements SplatAPI
 				return "fileio_new";
 			}
 		});
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{
@@ -146,7 +146,7 @@ public class FileIO implements SplatAPI
 				return "fileio_open";
 			}
 		});
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{
@@ -157,7 +157,7 @@ public class FileIO implements SplatAPI
 				return "fileio_save";
 			}
 		});
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{
@@ -175,7 +175,7 @@ public class FileIO implements SplatAPI
 				return "fileio_save-as";
 			}
 		});
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{
@@ -208,7 +208,7 @@ public class FileIO implements SplatAPI
 				return "fileio_close";
 			}
 		});
-		actions.add(new PluginAction()
+		actions.add(new ActionAdapter()
 		{
 			public void execute()
 			{

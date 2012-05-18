@@ -63,7 +63,7 @@ public class UndoManager implements SplatAPI
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				getHandler().undo();
@@ -73,7 +73,7 @@ public class UndoManager implements SplatAPI
 				return "undomanager_undo";
 			}
 		});
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				getHandler().redo();

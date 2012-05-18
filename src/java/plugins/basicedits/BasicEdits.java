@@ -48,7 +48,7 @@ public class BasicEdits implements SplatAPI
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				core.getTabbedEditor().getEditor().cut();
@@ -58,7 +58,7 @@ public class BasicEdits implements SplatAPI
 				return "basicedits_cut";
 			}
 		});
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				core.getTabbedEditor().getEditor().copy();
@@ -68,7 +68,7 @@ public class BasicEdits implements SplatAPI
 				return "basicedits_copy";
 			}
 		});
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				core.getTabbedEditor().getEditor().paste();
@@ -78,7 +78,7 @@ public class BasicEdits implements SplatAPI
 				return "basicedits_paste";
 			}
 		});
-		actions.add(new PluginAction() {
+		actions.add(new ActionAdapter() {
 			public void execute()
 			{
 				core.getTabbedEditor().getEditor().selectAll();
