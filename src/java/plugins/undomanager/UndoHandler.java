@@ -20,6 +20,7 @@
 package com.digitaltea.splat.plugins.undomanager;
 
 import com.digitaltea.splat.core.coreplugin.DocumentTab;
+import com.digitaltea.splat.plugins.PluginAction;
 
 import java.util.Deque;
 import java.util.ArrayDeque;
@@ -35,6 +36,8 @@ public class UndoHandler
 	private DocumentTab editor;
 	private Deque<UndoEvent> undoStack = new ArrayDeque<UndoEvent>();
 	private Deque<UndoEvent> redoStack = new ArrayDeque<UndoEvent>();
+	private PluginAction undoItem;
+	private PluginAction redoItem;
 
 	private boolean lock;
 
@@ -56,10 +59,15 @@ public class UndoHandler
 		}
 	}
 
-	public UndoHandler(final DocumentTab editor)
+	public UndoHandler(final DocumentTab editor, final PluginAction undoItem, final PluginAction redoItem)
 	{
 		this.editor = editor;
+		this.undoItem = undoItem;
+		this.redoItem = redoItem;
 		lock = false;
+
+		undoItem.setEnabled(false);
+		redoItem.setEnabled(false);
 
 		editor.addExtendedModifyListener(new ExtendedModifyListener()
 		{
@@ -82,9 +90,13 @@ public class UndoHandler
 						}
 					}
 					undoStack.addFirst(edit);
+					redoStack.clear();
+					undoItem.setEnabled(true);
+					redoItem.setEnabled(false);
 				} else
 				{
 					redoStack.addFirst(edit);
+					redoItem.setEnabled(true);
 				}
 			}
 		});
@@ -99,6 +111,9 @@ public class UndoHandler
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
 			lock = false;
+
+			if (undoStack.isEmpty())
+				undoItem.setEnabled(false);
 		}
 	}
 
@@ -109,6 +124,9 @@ public class UndoHandler
 			UndoEvent edit = redoStack.removeFirst();
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
+
+			if (redoStack.isEmpty())
+				redoItem.setEnabled(false);
 		}
 	}
 

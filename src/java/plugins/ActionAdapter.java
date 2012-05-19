@@ -42,17 +42,20 @@ public class ActionAdapter implements PluginAction
 
 	public void setEnabled(boolean enabled)
 	{
-		for (Item item : items)
+		if (this.enabled != enabled)
 		{
-			((MenuItem)item).setEnabled(enabled);
+			for (Item item : items)
+			{
+				((MenuItem)item).setEnabled(enabled);
+			}
+			this.enabled = enabled;
 		}
-		this.enabled = enabled;
 	}
 
 	public void addItem(Item item)
 	{
 		items.add(item);
 		if (!enabled)
-			((MenuItem)item).setEnabled(enabled);
+			((MenuItem)item).setEnabled(false);
 	}
 }

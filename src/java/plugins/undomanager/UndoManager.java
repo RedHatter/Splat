@@ -44,16 +44,40 @@ public class UndoManager implements SplatAPI
 	public CoreAPI core;
 
 	private List<UndoHandler> undoHandlers = new ArrayList<UndoHandler>();
+	private PluginAction undo;
+	private PluginAction redo;
 
 	@Init
 	public boolean init()
 	{
-		undoHandlers.add(new UndoHandler(core.getTabbedEditor().getEditor()));
+		undo = new ActionAdapter() {
+			public void execute()
+			{
+				getHandler().undo();
+			}
+			public String getId()
+			{
+				return "undomanager_undo";
+			}
+		};
+
+		redo = new ActionAdapter() {
+			public void execute()
+			{
+				getHandler().redo();
+			}
+			public String getId()
+			{
+				return "undomanager_redo";
+			}
+		};
+
+		undoHandlers.add(new UndoHandler(core.getTabbedEditor().getEditor(), undo, redo));
 		core.getTabbedEditor().addNewTabListener(new NewTabListener()
 		{
 			public void newTab(NewTabEvent e)
 			{
-				undoHandlers.add(new UndoHandler(e.editor));
+				undoHandlers.add(new UndoHandler(e.editor, undo, redo));
 			}
 		});
 
@@ -63,26 +87,9 @@ public class UndoManager implements SplatAPI
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				getHandler().undo();
-			}
-			public String getId()
-			{
-				return "undomanager_undo";
-			}
-		});
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				getHandler().redo();
-			}
-			public String getId()
-			{
-				return "undomanager_redo";
-			}
-		});
+		actions.add(undo);
+		actions.add(redo);
+
 		return actions;
 	}
 
