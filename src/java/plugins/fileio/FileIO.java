@@ -58,6 +58,7 @@ public class FileIO implements SplatAPI
 	public CoreAPI core;
 
 	private Shell shell;
+	private File location;
 
 	@Init
 	public boolean init()
@@ -241,18 +242,19 @@ public class FileIO implements SplatAPI
 	{
 		FileDialog dialog = new FileDialog(parent, style);
 		dialog.setOverwrite(true);
-
-		String filterPath = "/";
-		String platform = SWT.getPlatform();
-		if (platform.equals("win32") || platform.equals("wpf"))
-			filterPath = "c:\\";
-
-		dialog.setFilterPath(filterPath);
+		if (this.location != null)
+		{
+			dialog.setFilterPath(this.location.getParent());
+		}
 		String location = dialog.open();
 		if (location != null)
-			return new File(location);
-		else
+		{
+			this.location = new File(location);
+			return this.location;
+		} else
+		{
 			return new File("");
+		}
 
 	}
 
