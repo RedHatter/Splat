@@ -32,6 +32,7 @@ import net.xeoh.plugins.base.annotations.events.*;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 
 //GUI widgets
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.FillLayout;
@@ -57,6 +58,7 @@ public class Core implements CoreAPI
 		final Display display = new Display();
 		shell = new Shell(display);
 		shell.setLayout(new FillLayout());
+
 
 		tabbedEditor = new TabbedEditor(shell);
 		tabbedEditor.newTab();

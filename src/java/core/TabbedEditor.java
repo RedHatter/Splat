@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -48,12 +50,12 @@ public class TabbedEditor
 	private Menu popup;
 	private List<NewTabListener> newTabListeners = new ArrayList<NewTabListener>();
 
-	public TabbedEditor(Composite parent)
-        {
+	public TabbedEditor(final Composite parent)
+	{
 		tabFolder = new TabFolder(parent, SWT.BORDER);
 		final Button button = new Button(tabFolder, SWT.NONE);
 		button.setText("x");
-		button.setBounds(parent.getSize().x-30, 5, 20, 20);
+		button.setSize(20, 20);
 		button.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -65,7 +67,16 @@ public class TabbedEditor
 				}
 			}
 		});
-        }
+		
+		parent.addListener(SWT.Resize, new Listener()
+		{
+			public void handleEvent(Event e)
+			{
+				button.setLocation(parent.getSize().x-30, 5);
+			}
+		});
+
+	}
 
 	public void newTab() {newTab(null);}
 
