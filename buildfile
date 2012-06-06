@@ -60,6 +60,10 @@ define "Splat", :layout=>java_layout do
       system "jar cf plugins/CorePlugin.jar com/digitaltea/splat/core"
     }
   end
+
+  task :copy do
+    system "cp -rf * /opt/Splat-run"
+  end
 end
 
 

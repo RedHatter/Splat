@@ -39,7 +39,8 @@ public class UndoHandler
 	private PluginAction undoItem;
 	private PluginAction redoItem;
 
-	private boolean lock;
+	private boolean uLock;
+	private boolean rLock;
 
 	private class UndoEvent extends EventObject
 	{
@@ -64,7 +65,8 @@ public class UndoHandler
 		this.editor = editor;
 		this.undoItem = undoItem;
 		this.redoItem = redoItem;
-		lock = false;
+		uLock = false;
+		rLock = false;
 
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
@@ -75,7 +77,15 @@ public class UndoHandler
 			{
 				UndoEvent edit = new UndoEvent(e.getSource(), e.start, e.length, e.replacedText, false);
 
-				if (!lock)
+				if (rLock)
+				{
+					undoStack.addFirst(edit);
+					undoItem.setEnabled(true);
+				} else if (uLock)
+				{
+					redoStack.addFirst(edit);
+					redoItem.setEnabled(true);
+				} else
 				{
 					if (edit.length == 1 && editor.getTextRange(edit.start, 1).matches("\\w"))
 					{
@@ -93,10 +103,6 @@ public class UndoHandler
 					redoStack.clear();
 					undoItem.setEnabled(true);
 					redoItem.setEnabled(false);
-				} else
-				{
-					redoStack.addFirst(edit);
-					redoItem.setEnabled(true);
 				}
 			}
 		});
@@ -106,11 +112,11 @@ public class UndoHandler
 	{
 		if (!undoStack.isEmpty())
 		{
-			lock = true;
+			uLock = true;
 			UndoEvent edit = undoStack.removeFirst();
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
-			lock = false;
+			uLock = false;
 
 			if (undoStack.isEmpty())
 				undoItem.setEnabled(false);
@@ -121,9 +127,11 @@ public class UndoHandler
 	{
 		if (!redoStack.isEmpty())
 		{
+			rLock = true;
 			UndoEvent edit = redoStack.removeFirst();
 			editor.replaceTextRange(edit.start, edit.length, edit.replacedText);
 			editor.setCaretOffset(edit.start);
+			rLock = false;
 
 			if (redoStack.isEmpty())
 				redoItem.setEnabled(false);
