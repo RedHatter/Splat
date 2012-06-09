@@ -91,6 +91,7 @@ public class Search implements SplatAPI
 		layout.marginHeight = 15;
 		layout.marginWidth = 15;
 		findDialog.setLayout(layout);
+		findDialog.setText("Find");
 
 		new Label(findDialog, SWT.NONE).setText("Search for:");
 
@@ -201,6 +202,7 @@ public class Search implements SplatAPI
 		layout.marginHeight = 15;
 		layout.marginWidth = 15;
 		replaceDialog.setLayout(layout);
+		replaceDialog.setText("Find and Replace");
 
 		new Label(replaceDialog, SWT.NONE).setText("Search for:");
 

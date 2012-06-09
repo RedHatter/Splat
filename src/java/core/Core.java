@@ -62,6 +62,7 @@ public class Core implements CoreAPI
 		//Create window
 		final Display display = new Display();
 		shell = new Shell(display);
+		shell.setText("Splat");
 		shell.setLayout(new FillLayout());
 
 		tabbedEditor = new TabbedEditor(shell);
