@@ -72,8 +72,6 @@ public class DocumentTab extends StyledText
 				setSavedState(false);
 			}
 		});
-
-		this.setFocus();
 	}
 
 	public File getFile()

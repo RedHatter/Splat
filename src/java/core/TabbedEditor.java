@@ -47,12 +47,19 @@ import java.io.File;
 public class TabbedEditor
 {
 	private TabFolder tabFolder;
-	private Menu popup;
 	private List<NewTabListener> newTabListeners = new ArrayList<NewTabListener>();
 
 	public TabbedEditor(final Composite parent)
 	{
 		tabFolder = new TabFolder(parent, SWT.BORDER);
+		tabFolder.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				tabFolder.getSelection()[0].getControl().setFocus();
+			}
+		});
+
 		final Button button = new Button(tabFolder, SWT.NONE);
 		button.setText("x");
 		button.setSize(20, 20);
@@ -85,7 +92,6 @@ public class TabbedEditor
 	public void newTab(File location, String content)
 	{
 		DocumentTab editor = new DocumentTab(tabFolder, location);
-		editor.setMenu(popup);
 
 		if (tabFolder.getItemCount() != 1)
 		{
