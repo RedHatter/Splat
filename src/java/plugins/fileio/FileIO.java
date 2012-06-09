@@ -77,7 +77,6 @@ public class FileIO implements SplatAPI
 					if (!editor.getSavedState())
 					{
 						MessageBox alert = new MessageBox(shell, SWT.CANCEL|SWT.NO|SWT.YES);
-//						alert.setText("");
 						alert.setMessage("Save Changes to \"" + editor.getName() + "\" before closing?");
 
 						switch (alert.open())
@@ -118,29 +117,7 @@ public class FileIO implements SplatAPI
 		{
 			public void execute()
 			{
-				//TODO Add support for diffrent encodings
-				File file = showFileDialog(shell, SWT.OPEN);
-				if (file.getName() != "")
-				{
-					String content = "";
-					try {
-						Reader reader = new BufferedReader(new FileReader(file));
-						StringBuilder builder = new StringBuilder();
-						char[] buffer = new char[8192];
-						int read;
-						while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-							builder.append(buffer, 0, read);
-						}				
-						content = builder.toString();
-						reader.close();
-					}
-					catch (IOException e)
-					{
-						System.err.println("Caught IOException: " + e.getMessage());
-					}
-					core.getTabbedEditor().newTab(file, content);
-					core.getTabbedEditor().getEditor().setSavedState(true);
-				}
+				open(null);
 			}
 			public String getId()
 			{
@@ -186,7 +163,6 @@ public class FileIO implements SplatAPI
 				if (!editor.getSavedState())
 				{
 					MessageBox alert = new MessageBox(shell, SWT.CANCEL|SWT.NO|SWT.YES);
-//					alert.setText("");
 					alert.setMessage("Save Changes to \"" + editor.getName() + "\" before closing?");
 
 					switch (alert.open())
@@ -223,12 +199,20 @@ public class FileIO implements SplatAPI
 		return actions;
 	}
 
-	private void save(DocumentTab editor)
+	public void save(DocumentTab editor)
 	{
 		String content = editor.getText();
 		File file = editor.getFile();
 		if (file == null)
+		{
 			file = showFileDialog(shell, SWT.SAVE);
+			if (file.getName() != "")
+			{
+				core.getTabbedEditor().closeTab();
+				open(file);
+				editor = core.getTabbedEditor().getEditor();
+			}
+		}
 
 		if (file.getName() != "")
 		{
@@ -237,6 +221,36 @@ public class FileIO implements SplatAPI
 		}
 
 	}
+
+	//TODO Add support for diffrent encodings
+	public void open(File file)
+	{
+		if (file == null)
+			file = showFileDialog(shell, SWT.OPEN);
+
+		if (file.getName() != "")
+		{
+			String content = "";
+			try {
+				Reader reader = new BufferedReader(new FileReader(file));
+				StringBuilder builder = new StringBuilder();
+				char[] buffer = new char[8192];
+				int read;
+				while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
+					builder.append(buffer, 0, read);
+				}				
+				content = builder.toString();
+				reader.close();
+			}
+			catch (IOException e)
+			{
+				System.err.println("Caught IOException: " + e.getMessage());
+			}
+			core.getTabbedEditor().newTab(file, content);
+			core.getTabbedEditor().getEditor().setSavedState(true);
+		}
+	}
+
 
 	private File showFileDialog(Shell parent, int style)
 	{
@@ -255,7 +269,6 @@ public class FileIO implements SplatAPI
 		{
 			return new File("");
 		}
-
 	}
 
 	private void writeToFile(File file, String content)
