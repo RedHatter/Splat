@@ -21,6 +21,7 @@ package com.digitaltea.splat.core;
 
 import com.digitaltea.splat.core.coreplugin.TabbedEditor;
 import com.digitaltea.splat.plugins.PluginAction;
+import com.digitaltea.splat.plugins.SplatAPI;
 
 import net.xeoh.plugins.base.Plugin;
 
@@ -35,6 +36,8 @@ public interface CoreAPI extends Plugin
 	public TabbedEditor getTabbedEditor();
 
 	public Shell getShell();
+
+	public SplatAPI getPlugin(String id);
 
 	public void shutdown();
 }

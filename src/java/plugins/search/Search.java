@@ -511,6 +511,11 @@ public class Search implements SplatAPI
 		return start;
 	}
 
+	public String getId()
+	{
+		return "search";
+	}
+
 	@Shutdown
 	public void shutdown() {System.out.println("Shutdown Search");}
 }

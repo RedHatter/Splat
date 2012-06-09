@@ -272,6 +272,11 @@ public class FileIO implements SplatAPI
 		}
 	}
 
+		public String getId()
+	{
+		return "fileio";
+	}
+
 	@Shutdown
 	public void shutdown() {System.out.println("Shutdown FileIO");}
 }

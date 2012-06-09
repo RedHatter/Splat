@@ -204,6 +204,11 @@ public class ActionsHandler implements SplatAPI
 		return actions;
 	}
 
+	public String getId()
+	{
+		return "actionshandler";
+	}
+
 	@Shutdown
 	public void shutdown() {System.out.println("Shutdown Menubar");}
 }

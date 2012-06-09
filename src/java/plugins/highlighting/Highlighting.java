@@ -1,5 +1,5 @@
 /*************************************************************************
- *  BasicEdits.java
+ *  Highlight.java
  *  This file is part of Splat.
  *
  *  Copyright (C) 2012 Christian Johnson
@@ -17,85 +17,87 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Splat.  If not, see <http://www.gnu.org/licenses/>.
  ************************************************************************/
-package com.digitaltea.splat.plugins.basicedits;
+package com.digitaltea.splat.plugins.highlighting;
 
 import com.digitaltea.splat.plugins.*;
 import com.digitaltea.splat.core.CoreAPI;
+import com.digitaltea.splat.core.coreplugin.NewTabListener;
+import com.digitaltea.splat.core.coreplugin.NewTabEvent;
+import com.digitaltea.splat.core.coreplugin.DocumentTab;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.*;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 
+//Needed for syntax hilighting
+import net.sf.colorer.ParserFactory;
+import net.sf.colorer.swt.TextColorer;
+import net.sf.colorer.swt.ColorManager;
+
+import java.io.File;
+import java.util.List;
 import java.util.Collection;
 import java.util.ArrayList;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
-
 @PluginImplementation
-public class BasicEdits implements SplatAPI
+public class Highlighting implements SplatAPI
 {
 
 	@InjectPlugin
 	public CoreAPI core;
 
+	private TextColorer colorer;
+
 	@Init
 	public boolean init()
 	{
+		attach(core.getTabbedEditor().getEditor());
+		core.getTabbedEditor().addNewTabListener(new NewTabListener()
+		{
+			public void newTab(NewTabEvent e)
+			{
+				attach(core.getTabbedEditor().getEditor());
+			}
+		});
+
 		return true;
 	}
 
 	public Collection<PluginAction> getActions()
 	{
 		Collection<PluginAction> actions = new ArrayList<PluginAction>();
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				core.getTabbedEditor().getEditor().cut();
-			}
-			public String getId()
-			{
-				return "basicedits_cut";
-			}
-		});
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				core.getTabbedEditor().getEditor().copy();
-			}
-			public String getId()
-			{
-				return "basicedits_copy";
-			}
-		});
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				core.getTabbedEditor().getEditor().paste();
-			}
-			public String getId()
-			{
-				return "basicedits_paste";
-			}
-		});
-		actions.add(new ActionAdapter() {
-			public void execute()
-			{
-				core.getTabbedEditor().getEditor().selectAll();
-			}
-			public String getId()
-			{
-				return "basicedits_select-all";
-			}
-		});
 		return actions;
+	}
+
+	private void attach(DocumentTab editor)
+	{
+			//Setup syntax highlighting
+			colorer = new TextColorer(new ParserFactory(Thread.currentThread().getContextClassLoader().getResource("colorer/catalog.xml").getPath()), new ColorManager());
+			colorer.attach(editor);
+			colorer.setCross(true, true);
+			colorer.setRegionMapper("default", true);
+
+			File location = core.getTabbedEditor().getEditor().getFile();
+
+			if (location != null)
+				colorer.chooseFileType(location.getName());
+	}
+
+	public void setType(String type)
+	{
+		colorer.chooseFileType(type);
+	}
+
+	public TextColorer getColorer()
+	{
+		return colorer;
 	}
 
 	public String getId()
 	{
-		return "basicedits";
+		return "highlighting";
 	}
 
 	@Shutdown
-	public void shutdown() {System.out.println("Shutdown BasicEdits");}
+	public void shutdown() {System.out.println("Shutdown Highlight");}
 }

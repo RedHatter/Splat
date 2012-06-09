@@ -108,6 +108,11 @@ public class UndoManager implements SplatAPI
 		return null;
 	}
 
+	public String getId()
+	{
+		return "undomanager";
+	}
+
 	@Shutdown
 	public void shutdown() {System.out.println("Shutdown UndoManager");}
 }

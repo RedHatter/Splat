@@ -19,11 +19,6 @@
  ************************************************************************/
 package com.digitaltea.splat.core.coreplugin;
 
-//Needed for syntax hilighting
-import net.sf.colorer.ParserFactory;
-import net.sf.colorer.swt.TextColorer;
-import net.sf.colorer.swt.ColorManager;
-
 //GUI widgets
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -45,36 +40,27 @@ public class DocumentTab extends StyledText
 {
 	private boolean saved;
 	private File location;
-	private TextColorer colorer;
 	private TabItem item;
 
 	//Default font used for setFont in constructor
 	private String defaultFont = "Ubuntu Mono";
 
-	public DocumentTab(TabFolder parent, File locationArg, String content)
+	public DocumentTab(TabFolder parent, File locationArg)
 	{
 		super(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		location = locationArg;
 
-		//Create setup syntax highlighting
-		colorer = new TextColorer(new ParserFactory(Thread.currentThread().getContextClassLoader().getResource("colorer/catalog.xml").getPath()), new ColorManager());
-		colorer.attach(this);
-		colorer.setCross(true, true);
-		colorer.setRegionMapper("default", true);
-
 		item = new TabItem(parent, SWT.NONE);
 		if(locationArg != null)
 		{
 			item.setText(location.getName());
-			colorer.chooseFileType(location.getName());
 		}
 		else
 			item.setText("Untitled Document");
 
 		parent.setSelection(item);
 
-		append(content);
 		item.setControl(this);
 
 		setFont(new Font(parent.getDisplay(), defaultFont, 13, SWT.NORMAL));
@@ -125,17 +111,6 @@ public class DocumentTab extends StyledText
 	public boolean getSavedState()
 	{
 		return saved;
-	}
-
-	//TODO: GUI for changing filetype
-	public void setHighlightType(String type)
-	{
-		colorer.chooseFileType(type);
-	}
-
-	public TextColorer getColorer()
-	{
-		return colorer;
 	}
 
 	public void setActive()

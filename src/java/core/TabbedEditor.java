@@ -84,7 +84,7 @@ public class TabbedEditor
 
 	public void newTab(File location, String content)
 	{
-		DocumentTab editor = new DocumentTab(tabFolder, location, content);
+		DocumentTab editor = new DocumentTab(tabFolder, location);
 		editor.setMenu(popup);
 
 		if (tabFolder.getItemCount() != 1)
@@ -103,6 +103,8 @@ public class TabbedEditor
 			NewTabListener listener = newTabListeners.get(i);
 			listener.newTab(e);
 		}
+
+		editor.append(content);
 	}
 
 	public void closeTab()

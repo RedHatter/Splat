@@ -31,5 +31,7 @@ public interface SplatAPI extends Plugin
 
 	public Collection<PluginAction> getActions();
 
+	public String getId();
+
 	public void shutdown();
 }

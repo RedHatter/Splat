@@ -37,6 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.FillLayout;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
 
 @PluginImplementation
 public class Core implements CoreAPI
@@ -50,9 +52,13 @@ public class Core implements CoreAPI
 	//Main window
 	private Shell shell;
 
+	private Map<String,SplatAPI> pluginMap;
+
 	@Init
 	public boolean init()
 	{
+		pluginMap = new HashMap<String,SplatAPI>();
+
 		//Create window
 		final Display display = new Display();
 		shell = new Shell(display);
@@ -76,6 +82,17 @@ public class Core implements CoreAPI
 	public Shell getShell()
 	{
 		return shell;
+	}
+
+	public SplatAPI getPlugin(String id)
+	{
+		return pluginMap.get(id);
+	}
+
+	@PluginLoaded
+	public void registerPlugin(SplatAPI plugin)
+	{
+		pluginMap.put(plugin.getId(), plugin);
 	}
 
 	//Load all plugins from new thread so init can return
