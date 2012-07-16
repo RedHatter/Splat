@@ -123,6 +123,11 @@ public class TabbedEditor
 		return (DocumentTab)tabFolder.getSelection()[0].getControl();
 	}
 
+	public int getSelectionIndex()
+	{
+		return tabFolder.getSelectionIndex();
+	}
+
 	public DocumentTab[] getEditors()
 	{
 		TabItem[] items = tabFolder.getItems();

@@ -40,6 +40,7 @@ define "Splat", :layout=>java_layout do
   manifest['Main-Class'] = 'com.digitaltea.splat.Splat'
   manifest['Class-Path'] = compile.classpath.map {|dep| File.basename(dep) }.join(":")
 
+  run.with Dir["target/classes/plugins/*"]
   run.using :main => "com.digitaltea.splat.Splat",
             :java_args => ["-Djava.library.path=#{LIBRARY}"]
 

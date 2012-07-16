@@ -29,7 +29,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.*;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 
-//Needed for syntax hilighting
+//Needed for syntax highlighting
 import net.sf.colorer.ParserFactory;
 import net.sf.colorer.swt.TextColorer;
 import net.sf.colorer.swt.ColorManager;
@@ -46,11 +46,12 @@ public class Highlighting implements SplatAPI
 	@InjectPlugin
 	public CoreAPI core;
 
-	private TextColorer colorer;
+	private List<TextColorer> colorers;
 
 	@Init
 	public boolean init()
 	{
+		colorers = new ArrayList<TextColorer>();
 		attach(core.getTabbedEditor().getEditor());
 		core.getTabbedEditor().addNewTabListener(new NewTabListener()
 		{
@@ -72,7 +73,7 @@ public class Highlighting implements SplatAPI
 	private void attach(DocumentTab editor)
 	{
 			//Setup syntax highlighting
-			colorer = new TextColorer(new ParserFactory(Thread.currentThread().getContextClassLoader().getResource("colorer/catalog.xml").getPath()), new ColorManager());
+			TextColorer colorer = new TextColorer(new ParserFactory(Thread.currentThread().getContextClassLoader().getResource("colorer/catalog.xml").getPath()), new ColorManager());
 			colorer.attach(editor);
 			colorer.setCross(true, true);
 			colorer.setRegionMapper("default", true);
@@ -81,16 +82,18 @@ public class Highlighting implements SplatAPI
 
 			if (location != null)
 				colorer.chooseFileType(location.getName());
+
+			colorers.add(colorer);
 	}
 
 	public void setType(String type)
 	{
-		colorer.chooseFileType(type);
+		colorers.get(core.getTabbedEditor().getSelectionIndex()).chooseFileType(type);
 	}
 
 	public TextColorer getColorer()
 	{
-		return colorer;
+		return colorers.get(core.getTabbedEditor().getSelectionIndex());
 	}
 
 	public String getId()
