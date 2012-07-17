@@ -43,6 +43,7 @@ import java.io.IOException;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -76,7 +77,7 @@ public class ActionsHandler implements SplatAPI
 		//Add popup menu to first tab
 		core.getTabbedEditor().getEditor().setMenu(popup);
 
-		//Listener to add popup ment to new tabs
+		//Listener to add popup to new tabs
 		core.getTabbedEditor().addNewTabListener(new NewTabListener()
 		{
 			public void newTab(NewTabEvent e)
@@ -119,13 +120,21 @@ public class ActionsHandler implements SplatAPI
 			ListIterator itemNodes = childNode.get("item").listIterator();
 			while(itemNodes.hasNext())
 			{
-				if (((XmlElement)itemNodes.next()).getAttribute("type").equals("separator"))
+				XmlElement element = (XmlElement)itemNodes.next();
+				if (element.getAttribute("type").equals("separator"))
 				{
 					new MenuItem(dropdown, SWT.SEPARATOR);
-				} else
+				} else if (element.getAttribute("type").equals("placeholder"))
 				{
 					new MenuItem(dropdown, SWT.PUSH);
+ 				} else
+				{
+					for (int i=0; i < Integer.parseInt(element.getAttribute("size")); i++)
+					{
+						new MenuItem(dropdown, SWT.PUSH);
+					}
 				}
+
 			}
 
 			buildMenus(childNode, dropdown);
@@ -158,39 +167,68 @@ public class ActionsHandler implements SplatAPI
 					//Get the last most parent menu
 					dropdown = dropdown.getItem(Integer.parseInt(index)).getMenu();
 				}
-				//So action can be acssesed from inner class
-				final PluginAction thisAction = action;
 
-				int index =  Integer.parseInt(actionXml.getUnique("postion").getValue());
+				int index = Integer.parseInt(actionXml.getUnique("postion").getValue());
 
-				//Remove placeholder
-				dropdown.getItem(index).dispose();
-
-				//Create the menu item
-				MenuItem item = new MenuItem(dropdown, SWT.PUSH, index);
-				item.setText(actionXml.getUnique("name").getValue());
-				item.setAccelerator(Integer.parseInt(actionXml.getUnique("shortcut").getValue()));
-				item.addSelectionListener(new SelectionAdapter()
+				if (actionXml.contains("size"))
 				{
-					public void widgetSelected(SelectionEvent e)
+					//So action can be acssesed from inner class
+					final PluginActionRange thisAction = (PluginActionRange)action;
+
+					Collection<Item> range = new ArrayList<Item>();
+					for (int i=0; i < Integer.parseInt(actionXml.getUnique("size").getValue()); i++)
 					{
-						thisAction.execute();
-					};
-				});
-				thisAction.addItem(item);
+						//Remove placeholder
+						dropdown.getItem(index+i).dispose();
 
-				if (actionXml.contains("popup"))
+						//Create the menu item
+						final int finalI = i;
+						MenuItem item = new MenuItem(dropdown, SWT.PUSH, index+i);
+						item.addSelectionListener(new SelectionAdapter()
+						{
+							public void widgetSelected(SelectionEvent e)
+							{
+								thisAction.execute(finalI);
+							};
+						});
+						range.add(item);
+					}
+					thisAction.addItems(range);
+				} else
 				{
-					MenuItem itemPop= new MenuItem(popup, SWT.PUSH);
-					itemPop.setText(actionXml.getUnique("name").getValue());
-					itemPop.setAccelerator(Integer.parseInt(actionXml.getUnique("shortcut").getValue()));
-					itemPop.addSelectionListener(new SelectionAdapter()
+					//So action can be acssesed from inner class
+					final PluginAction thisAction = action;
+
+					//Remove placeholder
+					dropdown.getItem(index).dispose();
+
+					//Create the menu item
+					MenuItem item = new MenuItem(dropdown, SWT.PUSH, index);
+					item.setText(actionXml.getUnique("name").getValue());
+					item.setAccelerator(Integer.parseInt(actionXml.getUnique("shortcut").getValue()));
+					item.addSelectionListener(new SelectionAdapter()
 					{
 						public void widgetSelected(SelectionEvent e)
 						{
 							thisAction.execute();
 						};
 					});
+					thisAction.addItem(item);
+
+
+					if (actionXml.contains("popup"))
+					{
+						MenuItem itemPop= new MenuItem(popup, SWT.PUSH);
+						itemPop.setText(actionXml.getUnique("name").getValue());
+						itemPop.setAccelerator(Integer.parseInt(actionXml.getUnique("shortcut").getValue()));
+						itemPop.addSelectionListener(new SelectionAdapter()
+						{
+							public void widgetSelected(SelectionEvent e)
+							{
+								thisAction.execute();
+							};
+						});
+					}
 				}
 			}
 		}

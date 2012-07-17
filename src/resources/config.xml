@@ -10,6 +10,8 @@
 			<item type="separator"/>
 			<item type="placeholder"/>
 			<item type="placeholder"/>
+			<item type="separator"/>
+			<item type="range" size="5" />
 		</menu>
 		<menu name="Edit">
 			<item type="placeholder"/>
@@ -63,6 +65,12 @@
 			<menu>0</menu>
 			<postion>7</postion>
 		</fileio_quit>
+		<fileio_resent>
+			<size>5</size>
+			<menu>0</menu>
+			<postion>9</postion>
+		</fileio_resent>
+
 
 		<undomanager_undo>
 			<name>Undo</name>

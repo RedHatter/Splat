@@ -31,6 +31,8 @@ import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.lang.StringBuilder;
 import java.io.File;
 import java.io.Reader;
@@ -39,6 +41,7 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.IOException;
 
 
@@ -48,6 +51,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.SWT;
 
 @PluginImplementation
@@ -59,12 +64,29 @@ public class FileIO implements SplatAPI
 
 	private Shell shell;
 	private File location;
+	private List<String> resent;
+	private ActionRangeAdapter range;
+
+	private final int RESENT_SIZE = 5;
 
 	@Init
 	public boolean init()
 	{
 		shell = core.getShell();
-
+		resent = new LinkedList<String>();
+		try
+		{
+	        BufferedReader reader = new BufferedReader(new FileReader(Thread.currentThread().getContextClassLoader().getResource("resent").getPath()));
+			for (int i=0; i<RESENT_SIZE; i++)
+			{
+				resent.add(i,reader.readLine());
+			}
+			reader.close();
+		}
+		catch (IOException e)
+		{
+			System.err.println("Caught IOException: " + e.getMessage());
+		}
 		shell.addListener (SWT.Close, new Listener ()
 		{
 			public void handleEvent (Event e)
@@ -196,6 +218,31 @@ public class FileIO implements SplatAPI
 				return "fileio_quit";
 			}
 		});
+		range = new ActionRangeAdapter()
+		{
+			public void execute(int index)
+			{
+				open(new File(resent.get(index)));
+			}
+			public void addItems(Collection<Item> items)
+			{
+				super.addItems(items);
+				int i = 0;
+				for (Item item : items)
+				{
+					String name = (new File(resent.get(i))).getName();
+					if (name.equals(" "))
+						((MenuItem)item).setEnabled(false);
+					item.setText((i+1)+". "+name);
+					i++;
+				}
+			}
+			public String getId()
+			{
+				return "fileio_resent";
+			}
+		};
+		actions.add(range);
 		return actions;
 	}
 
@@ -248,6 +295,8 @@ public class FileIO implements SplatAPI
 			}
 			core.getTabbedEditor().newTab(file, content);
 			core.getTabbedEditor().getEditor().setSavedState(true);
+
+			addResent(file);
 		}
 	}
 
@@ -285,7 +334,35 @@ public class FileIO implements SplatAPI
 		}
 	}
 
-		public String getId()
+	private void addResent(File file)
+	{
+		try
+		{
+			String path = file.getPath();
+			resent.remove(path);
+			resent.add(0,path);
+
+			Writer writer = new BufferedWriter(new FileWriter(Thread.currentThread().getContextClassLoader().getResource("resent").getPath()));
+
+			for (String write : resent)
+			{
+				writer.write(write+"\n");
+			}
+			writer.close();
+
+			for (int i=0; i<RESENT_SIZE; i++)
+			{
+				range.setName((i+1)+". "+(new File(resent.get(i))).getName(),i);
+			}
+		}
+		catch (IOException e)
+		{
+			System.err.println("Caught IOException: " + e.getMessage());
+		}
+	}
+
+
+	public String getId()
 	{
 		return "fileio";
 	}
