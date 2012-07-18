@@ -157,6 +157,15 @@ public class Search implements SplatAPI
 		gridData.horizontalSpan = 2;
 		mCase.setLayoutData(gridData);
 
+		searchText.addListener(SWT.DefaultSelection, new Listener()
+		{
+			public void handleEvent(Event e) 
+			{
+				if (e.detail != SWT.ICON_CANCEL)
+					find(searchText.getText(), regex.getSelection(), mCase.getSelection(), true, 1);
+			}
+		});
+
 		button = new Button(findDialog, SWT.PUSH);
 		button.setText("Find Next");
 		button.addSelectionListener(new SelectionAdapter()
@@ -332,6 +341,34 @@ public class Search implements SplatAPI
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		button.setLayoutData(gridData);
+
+		searchText.addListener(SWT.DefaultSelection, new Listener()
+		{
+			public void handleEvent(Event e) 
+			{
+				if (e.detail != SWT.ICON_CANCEL)
+				{
+					int context;
+					if (selContext.getSelection() == true)
+						context = 2;
+					else if (allContext.getSelection() == true)
+						context = 3;
+					else
+						context = 1;
+
+					find(searchText.getText(), regex.getSelection(), mCase.getSelection(), true, context);
+				}
+			}
+		});
+
+		replaceText.addListener(SWT.DefaultSelection, new Listener()
+		{
+			public void handleEvent(Event e) 
+			{
+				if (e.detail != SWT.ICON_CANCEL)
+					core.getTabbedEditor().getEditor().insert(replaceText.getText());
+			}
+		});
 
 		final Button prevButton = new Button(replaceDialog, SWT.PUSH);
 		prevButton.setText("Replace");
