@@ -46,7 +46,7 @@ import java.io.File;
 
 public class TabbedEditor
 {
-	private TabFolder tabFolder;
+	public TabFolder tabFolder;
 	private List<NewTabListener> newTabListeners = new ArrayList<NewTabListener>();
 
 	public TabbedEditor(final Composite parent)

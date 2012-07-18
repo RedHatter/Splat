@@ -43,7 +43,7 @@ public class DocumentTab extends StyledText
 	private TabItem item;
 
 	//Default font used for setFont in constructor
-	private String defaultFont = "Ubuntu Mono";
+	final private String FONT = "Ubuntu Mono";
 
 	public DocumentTab(TabFolder parent, File locationArg)
 	{
@@ -63,7 +63,7 @@ public class DocumentTab extends StyledText
 
 		item.setControl(this);
 
-		setFont(new Font(parent.getDisplay(), defaultFont, 13, SWT.NORMAL));
+		setFont(new Font(parent.getDisplay(), FONT, 13, SWT.NORMAL));
 
 		addModifyListener(new ModifyListener()
 		{

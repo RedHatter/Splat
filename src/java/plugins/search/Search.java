@@ -42,6 +42,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.SWT;
 
 @PluginImplementation
@@ -81,7 +83,38 @@ public class Search implements SplatAPI
 				return "search_replace";
 			}
 		});
+
+		actions.add(new ActionAdapter() {
+			public void execute()
+			{
+				openGoToDialog();
+			}
+			public String getId()
+			{
+				return "search_goto";
+			}
+		});
 		return actions;
+	}
+
+	private void openGoToDialog()
+	{
+		final DocumentTab editor = core.getTabbedEditor().getEditor();
+		final Text line = new Text(editor, SWT.SINGLE|SWT.BORDER);
+		line.setSize(100, 25);
+		line.setLocation(editor.getSize().x-120, 5);
+		line.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) 
+			{
+				String lineText = line.getText();
+				int goToLine = Integer.parseInt(!lineText.equals("") ? lineText : "1")-1;
+				int numLine = editor.getLineCount()-1;
+				editor.setCaretOffset(editor.getOffsetAtLine(numLine < goToLine ? numLine : (goToLine > 0 ? goToLine : 0)));
+				line.dispose();
+				editor.forceFocus();
+			}
+		});
+		line.forceFocus();
 	}
 
 	private void openFindDialog()
@@ -95,7 +128,7 @@ public class Search implements SplatAPI
 
 		new Label(findDialog, SWT.NONE).setText("Search for:");
 
-		final Text searchText = new Text(findDialog, SWT.SINGLE|SWT.BORDER);
+		final Text searchText = new Text(findDialog, SWT.SINGLE|SWT.BORDER|SWT.ICON_SEARCH|SWT.ICON_CANCEL|SWT.SEARCH);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -206,7 +239,7 @@ public class Search implements SplatAPI
 
 		new Label(replaceDialog, SWT.NONE).setText("Search for:");
 
-		final Text searchText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
+		final Text searchText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER|SWT.ICON_SEARCH|SWT.ICON_CANCEL|SWT.SEARCH);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -215,7 +248,7 @@ public class Search implements SplatAPI
 
 		new Label(replaceDialog, SWT.NONE).setText("Replace with:");
 
-		final Text replaceText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER);
+		final Text replaceText = new Text(replaceDialog, SWT.SINGLE|SWT.BORDER|SWT.ICON_SEARCH|SWT.ICON_CANCEL|SWT.SEARCH);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;

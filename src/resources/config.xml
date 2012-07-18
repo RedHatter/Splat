@@ -26,6 +26,7 @@
 		<menu name="Search">
 			<item type="placeholder"/>
 			<item type="placeholder"/>
+			<item type="placeholder"/>
 		</menu>
 	</menubar>
 	<actions>
@@ -127,5 +128,11 @@
 			<menu>2</menu>
 			<postion>1</postion>
 		</search_replace>
+		<search_goto>
+			<name>Go To Line</name>
+			<shortcut>262247</shortcut>
+			<menu>2</menu>
+			<postion>2</postion>
+		</search_goto>
 	</actions>
 </splat>
