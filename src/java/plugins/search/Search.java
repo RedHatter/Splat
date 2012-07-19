@@ -112,6 +112,7 @@ public class Search implements SplatAPI
 				editor.setCaretOffset(editor.getOffsetAtLine(numLine < goToLine ? numLine : (goToLine > 0 ? goToLine : 0)));
 				line.dispose();
 				editor.forceFocus();
+				editor.showSelection();
 			}
 		});
 		line.forceFocus();
@@ -579,6 +580,8 @@ public class Search implements SplatAPI
 				}
 			}
 		}
+
+		editor.showSelection();
 
 		return start;
 	}

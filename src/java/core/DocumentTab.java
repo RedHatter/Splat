@@ -56,7 +56,7 @@ public class DocumentTab extends StyledText
 
 	public DocumentTab(TabFolder parent, File locationArg)
 	{
-		super(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		super(parent, SWT.MULTI|SWT.V_SCROLL|SWT.H_SCROLL|SWT.WRAP);
 
 		location = locationArg;
 
