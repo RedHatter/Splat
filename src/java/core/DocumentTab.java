@@ -28,7 +28,16 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.custom.LineStyleListener;
+import org.eclipse.swt.custom.LineStyleEvent;
+import org.eclipse.swt.custom.Bullet;
+import org.eclipse.swt.custom.ST;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.graphics.GlyphMetrics;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,6 +79,17 @@ public class DocumentTab extends StyledText
 			public void modifyText(ModifyEvent e)
 			{
 				setSavedState(false);
+			}
+		});
+
+		addLineStyleListener(new LineStyleListener()
+		{
+			public void lineGetStyle(LineStyleEvent e)
+			{
+				e.bulletIndex = getLineAtOffset(e.lineOffset);
+				StyleRange style = new StyleRange();
+				style.metrics = new GlyphMetrics(0, 0, Integer.toString(getLineCount()+1).length()*12);
+				e.bullet = new Bullet(ST.BULLET_NUMBER,style);
 			}
 		});
 	}
@@ -115,4 +135,14 @@ public class DocumentTab extends StyledText
 	{
 		item.getParent().setSelection(item);
 	}
+
+	private static int numLen(int n)
+	{
+        int l;
+        n=Math.abs(n);
+        for (l=0;n>0;++l)
+                n/=10;
+        return l;
+	}
+
 }
