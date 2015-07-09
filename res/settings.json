@@ -1,0 +1,11 @@
+{
+  "menu" : {
+    "File" : {
+      "Quit" : {
+        "command" : "core.quit",
+        "id" : "core.quit",
+        "accel" : "<ctl>q"
+      }
+    }
+  }
+}

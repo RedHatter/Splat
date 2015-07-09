@@ -1,0 +1,13 @@
+<interface>
+	<object class="BuildableList" id="root">
+		<child>
+			<object class="Window">
+				<child>
+					<object class="Notebook">
+						<command>document.new</command>
+					</object>
+				</child>
+			</object>
+		</child>
+	</object>
+</interface>
