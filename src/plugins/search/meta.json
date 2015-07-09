@@ -1,0 +1,18 @@
+{
+	"menu": {
+		"Find": {
+			"Find": {
+				"command": "search.panel",
+				"id": "search.find",
+				"accel": "<ctl>f"
+			}
+		}
+	},
+	"plugins": {
+		"search": {
+			"name": "Search",
+			"description": "Find, replace, goto.",
+			"enabled": true
+		}
+	}
+}
