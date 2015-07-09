@@ -15,7 +15,7 @@ lib ()
 
 	if $contiune; then
 		echo "Compiling lib"
-		valac $pkgs --library=libsplat -H libsplat.h -g -o libsplat.so ../src/libsplat/* -X -fPIC -X -shared
+		valac $pkgs --library=libsplat -H gen/libsplat.h --vapi=gen/libsplat.vapi -g -o libsplat.so ../src/libsplat/* -X -fPIC -X -shared
 	fi
 }
 
@@ -31,7 +31,7 @@ core ()
 
 	if $contiune; then
 		echo "Compiling core"
-		valac --vapidir . $pkgs --pkg libsplat -g -o splat ../src/core/* -X -ldl -X -I. -X -L. -X -lsplat -X -Wl,-rpath=$(pwd) -X -rdynamic 
+		valac --vapidir gen $pkgs --pkg libsplat -g -o splat ../src/core/* -X -ldl -X -Igen -X -L. -X -lsplat -X -Wl,-rpath=$(pwd) -X -rdynamic 
 	fi
 }
 
@@ -59,7 +59,7 @@ plugins ()
 	</gresources>" > temp/$name.gresource.xml
 			glib-compile-resources --generate-source --sourcedir $d temp/$name.gresource.xml
 			[ -f $d/options ] && options=`cat $d/options`
-			valac $options --vapidir . $pkgs --pkg libsplat --gresources=temp/$name.gresource.xml -o plugins/$name.so -H $name.h --library=$name $d*.vala temp/$name.c -X -fPIC -X -shared -X -I. -X -L. -g
+			valac $options --vapidir gen $pkgs --pkg libsplat --gresources=temp/$name.gresource.xml -o plugins/$name.so -H gen/$name.h --vapi=gen/$name.vapi --library=$name $d*.vala temp/$name.c -X -fPIC -X -shared -X -Igen -X -L. -g
 		fi
 	done
 }
@@ -83,9 +83,13 @@ elif [ "$1" = "clean" ]; then
 elif [ "$1" = "debug" ]; then
 	cd target
 	gdb splat
+elif [ "$1" = "install" ]; then
+	mkdir /opt/splat
+	rsync -rv --exclude=gen target/* /opt/splat
 else
 	mkdir -p target/plugins
 	mkdir -p target/temp
+	mkdir -p target/gen
 	cd target
 	res
 	lib
