@@ -1,0 +1,31 @@
+{
+	"menu": {
+		"Edit": {
+			"Undo": {
+				"command": "history.undo [document.active]",
+				"id": "history.undo",
+				"accel": "<ctl>z"
+			},
+			"Redo": {
+				"command": "history.redo [document.active]",
+				"id" : "history.redo",
+				"accel": "<ctl><shift>z"
+			}
+		},
+		"View" : {
+			"Panels" : {
+				"History" : {
+					"command" : "history.panel",
+					"id" : "history.panel"
+				}
+			}
+		}
+	},
+	"plugins": {
+		"history": {
+			"name": "History",
+			"description": "Edit history.",
+			"enabled": true
+		}
+	}
+}
