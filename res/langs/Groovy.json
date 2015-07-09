@@ -1,0 +1,838 @@
+{
+    "fileTypes": [
+        "groovy", 
+        "gvy"
+    ], 
+    "foldingStartMarker": "(\\{\\s*$|^\\s*// \\{\\{\\{)", 
+    "foldingStopMarker": "^\\s*(\\}|// \\}\\}\\}$)", 
+    "keyEquivalent": "^~G", 
+    "name": "Groovy", 
+    "patterns": [
+        {
+            "captures": {
+                "1": {
+                    "name": "punctuation.definition.comment.groovy"
+                }
+            }, 
+            "match": "^(#!).+$\\n", 
+            "name": "comment.line.hashbang.groovy"
+        }, 
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.package.groovy"
+                }, 
+                "2": {
+                    "name": "storage.type.package.groovy"
+                }
+            }, 
+            "match": "^\\s*(package)\\s+([^ ;]+)", 
+            "name": "meta.package.groovy"
+        }, 
+        {
+            "captures": {
+                "1": {
+                    "name": "keyword.other.import.groovy"
+                }, 
+                "2": {
+                    "name": "storage.type.import.groovy"
+                }
+            }, 
+            "match": "^\\s*(import)\\s+([^ ;$]+);?", 
+            "name": "meta.import.groovy"
+        }, 
+        {
+            "include": "#groovy"
+        }
+    ], 
+    "repository": {
+        "class-object": {
+            "patterns": [
+                {
+                    "match": "(?x)\n\t\t\t\t\t\t\t\\b(\n\t\t\t\t\t\t\t\t(?:[a-z]\\w*\\.)* # Optional package specification\n\t\t\t\t\t\t\t\t[A-Z]\\w+\\b # Class name\n\t\t\t\t\t\t\t\t(?:<(?:[\\w, ]*)>)? # Optional Generics\n\t\t\t\t\t\t\t\t(?:\\[\\s*\\])* # Optional brackets (array)\n\t\t\t\t\t\t\t)\\b\n\t\t\t\t\t", 
+                    "name": "storage.type.class.groovy"
+                }
+            ]
+        }, 
+        "classes": {
+            "begin": "(?x)^\\s*\n\t\t\t\t\t(?:(?:\\b(?:(public|private|protected)|(static)|(final)|(native|synchronized|abstract|threadsafe|transient))\\b\\s*)*) # modifier\n\t\t\t\t\t(class)\\s+\n\t\t\t\t\t(\\w+)\\s* # identifier", 
+            "captures": {
+                "1": {
+                    "name": "storage.modifier.access-control.groovy"
+                }, 
+                "2": {
+                    "name": "storage.modifier.static.groovy"
+                }, 
+                "3": {
+                    "name": "storage.modifier.final.groovy"
+                }, 
+                "4": {
+                    "name": "storage.modifier.other.groovy"
+                }, 
+                "5": {
+                    "name": "storage.type.class.groovy"
+                }, 
+                "6": {
+                    "name": "entity.name.type.class.groovy"
+                }
+            }, 
+            "end": "$", 
+            "name": "meta.definition.class.groovy", 
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "storage.modifier.extends.groovy"
+                        }, 
+                        "2": {
+                            "name": "entity.other.inherited-class.groovy"
+                        }
+                    }, 
+                    "match": "(extends)\\s+([a-zA-Z0-9_\\.]+(?:<(?:[a-zA-Z0-9_, ])+>)?)\\s*", 
+                    "name": "meta.definition.class.inherited.classes.groovy"
+                }, 
+                {
+                    "begin": "(implements)\\s", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.modifier.implements.groovy"
+                        }
+                    }, 
+                    "end": "(?=\\s*extends|$|\\{)", 
+                    "name": "meta.definition.class.implemented.interfaces.groovy", 
+                    "patterns": [
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "entity.other.inherited-class.interface.groovy"
+                                }, 
+                                "2": {
+                                    "name": "punctuation.definition.implemented.interfaces.separator.groovy"
+                                }
+                            }, 
+                            "match": "((?:[a-z]\\w*.)*[A-Z]\\w*)\\s*(?:(,)|$|\\{)"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "comment-block": {
+            "begin": "/\\*", 
+            "captures": {
+                "0": {
+                    "name": "punctuation.definition.comment.groovy"
+                }
+            }, 
+            "end": "\\*/", 
+            "name": "comment.block.groovy"
+        }, 
+        "comments": {
+            "patterns": [
+                {
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.groovy"
+                        }
+                    }, 
+                    "match": "/\\*\\*/", 
+                    "name": "comment.block.empty.groovy"
+                }, 
+                {
+                    "include": "text.html.javadoc"
+                }, 
+                {
+                    "include": "#comment-block"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.groovy"
+                        }
+                    }, 
+                    "match": "(//).*$\\n?", 
+                    "name": "comment.line.double-slash.groovy"
+                }
+            ]
+        }, 
+        "constants": {
+            "patterns": [
+                {
+                    "match": "\\b([A-Z][A-Z0-9_]+)\\b", 
+                    "name": "constant.other.groovy"
+                }, 
+                {
+                    "match": "\\b(true|false|null)\\b", 
+                    "name": "constant.language.groovy"
+                }
+            ]
+        }, 
+        "groovy": {
+            "patterns": [
+                {
+                    "include": "#classes"
+                }, 
+                {
+                    "include": "#methods"
+                }, 
+                {
+                    "include": "#groovy-code"
+                }
+            ]
+        }, 
+        "groovy-code": {
+            "patterns": [
+                {
+                    "include": "#groovy-code-minus-map-keys"
+                }, 
+                {
+                    "include": "#map-keys"
+                }
+            ]
+        }, 
+        "groovy-code-minus-map-keys": {
+            "comment": "In some situations, maps can't be declared without enclosing []'s, \n\t\t\t\ttherefore we create a collection of everything but that", 
+            "patterns": [
+                {
+                    "include": "#comments"
+                }, 
+                {
+                    "include": "#support-functions"
+                }, 
+                {
+                    "include": "#keyword-language"
+                }, 
+                {
+                    "include": "#values"
+                }, 
+                {
+                    "include": "#keyword-operator"
+                }, 
+                {
+                    "include": "#storage-types"
+                }, 
+                {
+                    "include": "#storage-modifiers"
+                }
+            ]
+        }, 
+        "keyword": {
+            "patterns": [
+                {
+                    "include": "#keyword-operator"
+                }, 
+                {
+                    "include": "#keyword-language"
+                }
+            ]
+        }, 
+        "keyword-language": {
+            "patterns": [
+                {
+                    "match": "\\b(try|catch|finally|throw)\\b", 
+                    "name": "keyword.control.exception.groovy"
+                }, 
+                {
+                    "match": "\\b(return|break|continue|default|do|while|for|switch|if|else)\\b", 
+                    "name": "keyword.control.groovy"
+                }, 
+                {
+                    "begin": "\\bcase\\b", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "keyword.control.groovy"
+                        }
+                    }, 
+                    "end": ":", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.case-terminator.groovy"
+                        }
+                    }, 
+                    "name": "meta.case.groovy", 
+                    "patterns": [
+                        {
+                            "include": "#groovy-code-minus-map-keys"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "\\b(new)\\b", 
+                    "name": "keyword.other.new.groovy"
+                }, 
+                {
+                    "begin": "\\b(assert)\\s", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.control.assert.groovy"
+                        }
+                    }, 
+                    "end": "$", 
+                    "name": "meta.declaration.assertion.groovy", 
+                    "patterns": [
+                        {
+                            "match": ":", 
+                            "name": "keyword.operator.assert.expression-seperator.groovy"
+                        }, 
+                        {
+                            "include": "#groovy-code-minus-map-keys"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "\\b(throws)\\b", 
+                    "name": "keyword.other.throws.groovy"
+                }
+            ]
+        }, 
+        "keyword-operator": {
+            "patterns": [
+                {
+                    "match": "\\b(as)\\b", 
+                    "name": "keyword.operator.as.groovy"
+                }, 
+                {
+                    "match": "\\b(is)\\b", 
+                    "name": "keyword.operator.is.groovy"
+                }, 
+                {
+                    "match": "\\?\\:", 
+                    "name": "keyword.operator.elvis.groovy"
+                }, 
+                {
+                    "match": "\\.\\.", 
+                    "name": "keyword.operator.range.groovy"
+                }, 
+                {
+                    "match": "\\->", 
+                    "name": "keyword.operator.arrow.groovy"
+                }, 
+                {
+                    "match": "<<", 
+                    "name": "keyword.operator.leftshift.groovy"
+                }, 
+                {
+                    "match": "(?<=\\S)\\.(?=\\S)", 
+                    "name": "keyword.operator.navigation.groovy"
+                }, 
+                {
+                    "match": "(?<=\\S)\\?\\.(?=\\S)", 
+                    "name": "keyword.operator.safe-navigation.groovy"
+                }, 
+                {
+                    "begin": "\\?", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "keyword.operator.ternary.groovy"
+                        }
+                    }, 
+                    "end": "$", 
+                    "name": "meta.evaluation.ternary.groovy", 
+                    "patterns": [
+                        {
+                            "match": ":", 
+                            "name": "keyword.operator.ternary.expression-seperator.groovy"
+                        }, 
+                        {
+                            "include": "#groovy-code-minus-map-keys"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "==~", 
+                    "name": "keyword.operator.match.groovy"
+                }, 
+                {
+                    "match": "=~", 
+                    "name": "keyword.operator.find.groovy"
+                }, 
+                {
+                    "match": "\\b(instanceof)\\b", 
+                    "name": "keyword.operator.instanceof.groovy"
+                }, 
+                {
+                    "match": "(===|==|!=|<=|>=|<=>|<>|<|>|<<)", 
+                    "name": "keyword.operator.comparison.groovy"
+                }, 
+                {
+                    "match": "=", 
+                    "name": "keyword.operator.assignment.groovy"
+                }, 
+                {
+                    "match": "(\\-\\-|\\+\\+)", 
+                    "name": "keyword.operator.increment-decrement.groovy"
+                }, 
+                {
+                    "match": "(\\-|\\+|\\*|\\/|%)", 
+                    "name": "keyword.operator.arithmetic.groovy"
+                }, 
+                {
+                    "match": "(!|&&|\\|\\|)", 
+                    "name": "keyword.operator.logical.groovy"
+                }
+            ]
+        }, 
+        "map-keys": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "constant.other.key.groovy"
+                        }, 
+                        "2": {
+                            "name": "punctuation.definition.seperator.key-value.groovy"
+                        }
+                    }, 
+                    "match": "(\\w+)\\s*(:)"
+                }
+            ]
+        }, 
+        "method-call": {
+            "begin": "(\\w+)(\\()", 
+            "beginCaptures": {
+                "1": {
+                    "name": "meta.method.groovy"
+                }, 
+                "2": {
+                    "name": "punctuation.definition.method-parameters.begin.groovy"
+                }
+            }, 
+            "end": "\\)", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.method-parameters.end.groovy"
+                }
+            }, 
+            "name": "meta.method-call.groovy", 
+            "patterns": [
+                {
+                    "match": ",", 
+                    "name": "punctuation.definition.seperator.parameter.groovy"
+                }, 
+                {
+                    "include": "#groovy-code"
+                }
+            ]
+        }, 
+        "method-declaration-remainder": {
+            "patterns": [
+                {
+                    "begin": "\\(", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.parameters.begin.groovy"
+                        }
+                    }, 
+                    "contentName": "meta.definition.method.parameters.groovy", 
+                    "end": "\\)", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.parameters.end.groovy"
+                        }
+                    }, 
+                    "patterns": [
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "storage.type.parameter.groovy"
+                                }, 
+                                "2": {
+                                    "name": "variable.parameter.groovy"
+                                }
+                            }, 
+                            "match": "(?x)\\s*\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?:boolean|byte|char|short|int|float|long|double|(?:\\w+\\.)*[A-Z]\\w*\\b(?:<(?:[\\w, ]*)>)?(?:\\[\\s*\\])*)\n\t\t\t\t\t\t\t\t)?\n\t\t\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t\t\t([a-z_][A-Za-z0-9_]*) # variable\n\t\t\t\t\t\t\t", 
+                            "name": "meta.definition.method.parameter.groovy"
+                        }, 
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "storage.type.parameter.groovy"
+                                }
+                            }, 
+                            "match": "(boolean|byte|char|short|int|float|long|double|(?:\\w+\\.)*[A-Z]\\w*\\b(?:<(?:[\\w, ]*)>)?(?:\\[\\s*\\])*)", 
+                            "name": "meta.definition.method.parameter.groovy"
+                        }, 
+                        {
+                            "match": ",", 
+                            "name": "punctuation.definition.parameters.seperator.groovy"
+                        }, 
+                        {
+                            "include": "#comment-block"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\))\\s*(throws)\\s", 
+                    "captures": {
+                        "1": {
+                            "name": "storage.modifier.throws.groovy"
+                        }
+                    }, 
+                    "end": "(?=$|\\{)", 
+                    "name": "meta.definition.method.throwables.groovy", 
+                    "patterns": [
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "storage.type.throwable.groovy"
+                                }, 
+                                "2": {
+                                    "name": "punctuation.definition.throwables.seperator.groovy"
+                                }
+                            }, 
+                            "match": "((?:[a-z]\\w*.)*[A-Z]\\w*)\\s*(?:(,)|$|\\{)"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "methods": {
+            "patterns": [
+                {
+                    "begin": "(?x)^\\s*\n\t\t\t\t\t\t(?: # zero or more modifiers\n\t\t\t\t\t\t\t(?:\n\t\t\t\t\t\t\t\t(public|private|protected)|(final)|(native|synchronized|abstract|threadsafe|transient)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t)?\n\t\t\t\t\t\t\\s*  \n\t\t\t\t\t\t([A-Z](?:[a-zA-Z0-9_])+) # constructor/class name\n\t\t\t\t\t\t\\s* \n\t\t\t\t\t\t(?=\\()\n\t\t\t\t\t", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.modifier.access-control.groovy"
+                        }, 
+                        "2": {
+                            "name": "storage.modifier.final.groovy"
+                        }, 
+                        "3": {
+                            "name": "storage.modifier.other.groovy"
+                        }, 
+                        "4": {
+                            "name": "entity.name.function.constructor.groovy"
+                        }, 
+                        "5": {
+                            "name": "punctuation.definition.parameters.begin.groovy"
+                        }
+                    }, 
+                    "end": "{|$\\n?", 
+                    "name": "meta.definition.constructor.groovy", 
+                    "patterns": [
+                        {
+                            "include": "#method-declaration-remainder"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?x)^\\s*\n\t\t\t\t\t\t(?:\n\t\t\t\t\t\t\t(?: # or modifier and optional type\n\t\t\t\t\t\t\t\t(?:(?:\\b(public|private|protected)|(static)|(final)|(native|synchronized|abstract|threadsafe|transient))\\b\\s+)+\\s* # modifier\n\t\t\t\t\t\t\t\t(?:\\b \n\t\t\t\t\t\t\t\t\t(void)\n\t\t\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t\t\t(boolean|byte|char|short|int|float|long|double) # primitive\n\t\t\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t\t\t( # or class type\n\t\t\t\t\t\t\t\t\t\t(?:\\w+\\.)*[A-Z]\\w+\\b # Class name\n\t\t\t\t\t\t\t\t\t\t(?:<(?:[\\w, ]*)>)? # optional Generic type\n\t\t\t\t\t\t\t\t\t\t(?:\\[\\s*\\])* # zero or more square brackets (array)\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)?\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t(?:\\b # or type by itself\n\t\t\t\t\t\t\t\t(def)\n\t\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t\t(void)\n\t\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t\t(boolean|byte|char|short|int|float|long|double) # primitive\n\t\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t\t( # or class type\n\t\t\t\t\t\t\t\t\t(?:\\w+\\.)*[A-Z]\\w+\\b # Class name\n\t\t\t\t\t\t\t\t\t(?:<(?:[\\w, ]*)>)? # optional generics info\n\t\t\t\t\t\t\t\t\t(?:\\[\\s*\\])* # zero or more square brackets (array)\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t(\\w+) # method name\n\t\t\t\t\t\t\\s* \n\t\t\t\t\t\t(?=\\() # opening parens \n\t\t\t\t\t", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.modifier.access-control.groovy"
+                        }, 
+                        "10": {
+                            "name": "storage.type.return-type.primitive.groovy"
+                        }, 
+                        "11": {
+                            "name": "storage.type.return-type.class.groovy"
+                        }, 
+                        "12": {
+                            "name": "entity.name.function.groovy"
+                        }, 
+                        "2": {
+                            "name": "storage.modifier.static.groovy"
+                        }, 
+                        "3": {
+                            "name": "storage.modifier.final.groovy"
+                        }, 
+                        "4": {
+                            "name": "storage.modifier.other.groovy"
+                        }, 
+                        "5": {
+                            "name": "storage.type.return-type.void.groovy"
+                        }, 
+                        "6": {
+                            "name": "storage.type.return-type.primitive.groovy"
+                        }, 
+                        "7": {
+                            "name": "storage.type.return-type.class.groovy"
+                        }, 
+                        "8": {
+                            "name": "storage.type.return-type.def.groovy"
+                        }, 
+                        "9": {
+                            "name": "storage.type.return-type.void.groovy"
+                        }
+                    }, 
+                    "end": "{|$\\n?", 
+                    "name": "meta.definition.method.groovy", 
+                    "patterns": [
+                        {
+                            "include": "#method-declaration-remainder"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "nest_curly": {
+            "begin": "\\{", 
+            "captures": {
+                "0": {
+                    "name": "punctuation.section.scope.groovy"
+                }
+            }, 
+            "end": "\\}", 
+            "patterns": [
+                {
+                    "include": "#nest_curly"
+                }
+            ]
+        }, 
+        "numbers": {
+            "patterns": [
+                {
+                    "match": "((0(x|X)[0-9a-fA-F]*)|(\\+|-)?\\b(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)([LlFfUuDd]|UL|ul)?\\b", 
+                    "name": "constant.numeric.groovy"
+                }
+            ]
+        }, 
+        "regexp": {
+            "patterns": [
+                {
+                    "begin": "/(?=[^/]+/)", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.regexp.begin.groovy"
+                        }
+                    }, 
+                    "end": "/", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.regexp.end.groovy"
+                        }
+                    }, 
+                    "name": "string.regexp.groovy", 
+                    "patterns": [
+                        {
+                            "match": "\\\\.", 
+                            "name": "constant.character.escape.groovy"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "storage-modifiers": {
+            "patterns": [
+                {
+                    "match": "\\b(private|protected|public)\\b", 
+                    "name": "storage.modifier.access-control.groovy"
+                }, 
+                {
+                    "match": "\\b(static)\\b", 
+                    "name": "storage.modifier.static.groovy"
+                }, 
+                {
+                    "match": "\\b(final)\\b", 
+                    "name": "storage.modifier.final.groovy"
+                }, 
+                {
+                    "match": "\\b(native|synchronized|abstract|threadsafe|transient)\\b", 
+                    "name": "storage.modifier.other.groovy"
+                }
+            ]
+        }, 
+        "storage-types": {
+            "patterns": [
+                {
+                    "begin": "(@[^ (]+)(\\()", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.type.annotation.groovy"
+                        }, 
+                        "2": {
+                            "name": "punctuation.definition.annotation-arguments.begin.groovy"
+                        }
+                    }, 
+                    "end": "(\\))", 
+                    "endCaptures": {
+                        "1": {
+                            "name": "punctuation.definition.annotation-arguments.end.groovy"
+                        }
+                    }, 
+                    "name": "meta.declaration.annotation.groovy", 
+                    "patterns": [
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "constant.other.key.groovy"
+                                }, 
+                                "2": {
+                                    "name": "keyword.operator.assignment.groovy"
+                                }
+                            }, 
+                            "match": "(\\w*)\\s*(=)"
+                        }, 
+                        {
+                            "include": "#values"
+                        }, 
+                        {
+                            "match": ",", 
+                            "name": "punctuation.definition.seperator.groovy"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "@\\S+", 
+                    "name": "storage.type.annotation.groovy"
+                }, 
+                {
+                    "match": "\\b(def)\\b", 
+                    "name": "storage.type.def.groovy"
+                }, 
+                {
+                    "match": "\\b(boolean|byte|char|short|int|float|long|double)(?:\\[\\s*\\])*\\b", 
+                    "name": "storage.type.primitive.groovy"
+                }
+            ]
+        }, 
+        "string-quoted-double": {
+            "begin": "\"", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.groovy"
+                }
+            }, 
+            "end": "\"", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.groovy"
+                }
+            }, 
+            "name": "string.quoted.double.groovy", 
+            "patterns": [
+                {
+                    "match": "\\\\.", 
+                    "name": "constant.character.escape.groovy"
+                }, 
+                {
+                    "match": "\\$\\w+", 
+                    "name": "variable.other.interpolated.groovy"
+                }, 
+                {
+                    "begin": "\\$\\{", 
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.section.embedded.groovy"
+                        }
+                    }, 
+                    "end": "\\}", 
+                    "name": "source.groovy.embedded.source", 
+                    "patterns": [
+                        {
+                            "include": "#nest_curly"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "string-quoted-single": {
+            "begin": "'", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.groovy"
+                }
+            }, 
+            "end": "'", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.groovy"
+                }
+            }, 
+            "name": "string.quoted.single.groovy", 
+            "patterns": [
+                {
+                    "match": "\\\\.", 
+                    "name": "constant.character.escape.groovy"
+                }
+            ]
+        }, 
+        "strings": {
+            "patterns": [
+                {
+                    "include": "#string-quoted-double"
+                }, 
+                {
+                    "include": "#string-quoted-single"
+                }, 
+                {
+                    "include": "#regexp"
+                }
+            ]
+        }, 
+        "structures": {
+            "begin": "\\[", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.structure.begin.groovy"
+                }
+            }, 
+            "end": "\\]", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.structure.end.groovy"
+                }
+            }, 
+            "name": "meta.structure.groovy", 
+            "patterns": [
+                {
+                    "include": "#groovy-code"
+                }, 
+                {
+                    "match": ",", 
+                    "name": "punctuation.definition.separator.groovy"
+                }
+            ]
+        }, 
+        "support-functions": {
+            "patterns": [
+                {
+                    "match": "(?x)\\b(?:sprintf|print(?:f|ln)?)\\b", 
+                    "name": "support.function.print.groovy"
+                }, 
+                {
+                    "match": "(?x)\\b(?:shouldFail|fail(?:NotEquals)?|ass(?:ume|ert(?:S(?:cript|ame)|N(?:ot(?:Same|\n\t\t\t\t\tNull)|ull)|Contains|T(?:hat|oString|rue)|Inspect|Equals|False|Length|\n\t\t\t\t\tArrayEquals)))\\b", 
+                    "name": "support.function.testing.groovy"
+                }, 
+                {
+                    "match": "(?x)\\b(?:sleep|inspect|dump|use|with)\\b", 
+                    "name": "support.function.other.groovy"
+                }
+            ]
+        }, 
+        "values": {
+            "patterns": [
+                {
+                    "include": "#variables"
+                }, 
+                {
+                    "include": "#strings"
+                }, 
+                {
+                    "include": "#numbers"
+                }, 
+                {
+                    "include": "#constants"
+                }, 
+                {
+                    "include": "#class-object"
+                }, 
+                {
+                    "include": "#structures"
+                }, 
+                {
+                    "include": "#method-call"
+                }
+            ]
+        }, 
+        "variables": {
+            "patterns": [
+                {
+                    "match": "\\b(this|super)\\b", 
+                    "name": "variable.language.groovy"
+                }
+            ]
+        }
+    }, 
+    "scopeName": "source.groovy", 
+    "uuid": "B3A64888-EBBB-4436-8D9E-F1169C5D7613"
+}

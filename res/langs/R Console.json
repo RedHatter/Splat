@@ -1,0 +1,24 @@
+{
+    "fileTypes": [], 
+    "keyEquivalent": "^~R", 
+    "name": "R Console", 
+    "patterns": [
+        {
+            "begin": "^> ", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.section.embedded.r-console"
+                }
+            }, 
+            "end": "\\n|\\z", 
+            "name": "source.r.embedded.r-console", 
+            "patterns": [
+                {
+                    "include": "source.r"
+                }
+            ]
+        }
+    ], 
+    "scopeName": "source.r-console", 
+    "uuid": "F629C7F3-823B-4A4C-8EEE-9971490C5710"
+}

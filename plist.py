@@ -21,21 +21,26 @@ def dialog (open, msg):
     dialog.destroy()
     return return_val
 
+def convert (input_file, output_file):
+    if input_file.endswith('json'):
+        converted = "plist"
+        converted_dict = json.load(open(input_file))
+        plistlib.writePlist(converted_dict, output_file)
+    elif input_file.endswith('plist'):
+        converted = "json"
+        converted_dict = plistlib.readPlist(input_file)
+        converted_string = json.dumps(converted_dict, sort_keys=True, indent=4)
+        open(output_file, 'w').write(converted_string)
+    else:
+        print("WHAT THE F*** ARE YOU TRYING TO DO??????")
+        sys.exit(1)
 
-file_to_open = dialog (True, "Select an existing plist or json file to convert.")
-converted = None
- 
-if file_to_open.endswith('json'):
-    converted = "plist"
-    converted_dict = json.load(open(file_to_open))
-    file_to_write = dialog (False, "Select a filename to save the converted file.")
-    plistlib.writePlist(converted_dict, file_to_write)
-elif file_to_open.endswith('plist'):
-    converted = "json"
-    converted_dict = plistlib.readPlist(file_to_open)
-    converted_string = json.dumps(converted_dict, sort_keys=True, indent=4)
-    file_to_write = dialog(False, "Select a filename to save the converted file.")
-    open(file_to_write, 'w').write(converted_string)
+if len(sys.argv) > 1:
+    for arg in sys.argv[1:]:
+        print "Converting "+arg
+        convert (arg, arg[0:arg.find(".")]+".json")
 else:
-    print("WHAT THE F*** ARE YOU TRYING TO DO??????")
-    sys.exit(1)
+    file_to_open = dialog (True, "Select an existing plist or json file to convert.")
+    file_to_write = dialog (False, "Select a filename to save the converted file.")
+    converted = None
+    convert (file_to_open, file_to_write)

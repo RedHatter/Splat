@@ -1,0 +1,2264 @@
+{
+    "comment": "Symbol pattern : [a-zA-Z+!\\-_?0-9*~#@'`/.$=]", 
+    "fileTypes": [
+        "clj"
+    ], 
+    "foldingStartMarker": "(?x)^ [ \\t]* \\(\n\t  (?<par>\n\t    ( [^()\\n]++ | \\( \\g<par> \\)? )*+\n\t  )\n\t$", 
+    "foldingStopMarker": "^\\s*$", 
+    "keyEquivalent": "^~C", 
+    "name": "Clojure", 
+    "patterns": [
+        {
+            "include": "#comment"
+        }, 
+        {
+            "include": "#function"
+        }, 
+        {
+            "include": "#function_multi_method"
+        }, 
+        {
+            "include": "#macro"
+        }, 
+        {
+            "include": "#namespace"
+        }, 
+        {
+            "include": "#sexpr"
+        }
+    ], 
+    "repository": {
+        "all": {
+            "patterns": [
+                {
+                    "include": "#function"
+                }, 
+                {
+                    "include": "#function_multi_method"
+                }, 
+                {
+                    "include": "#lambda"
+                }, 
+                {
+                    "include": "#macro"
+                }, 
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#expr"
+                }, 
+                {
+                    "include": "#sexpr"
+                }
+            ]
+        }, 
+        "binding": {
+            "comment": "consume bindings to the end, dual recursive with binding_exp", 
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "begin": "\\[", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.vector.begin.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding.vector.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?<=\\[)", 
+                            "comment": "TODO: merge with parameters ??", 
+                            "end": "\\]", 
+                            "endCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.vector.end.clojure"
+                                }
+                            }, 
+                            "name": "meta.parameters.vector.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#comment"
+                                }, 
+                                {
+                                    "include": "#metadata"
+                                }, 
+                                {
+                                    "include": "#parameters_variable"
+                                }, 
+                                {
+                                    "match": "\\&", 
+                                    "name": "keyword.operator.varargs.clojure"
+                                }, 
+                                {
+                                    "match": "(:as)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                    "name": "keyword.operator.symbolargs.clojure"
+                                }, 
+                                {
+                                    "include": "#parameters"
+                                }, 
+                                {
+                                    "include": "#parameters_map"
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#binding_exp"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "\\{", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.map.begin.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding.map.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?<=\\{)", 
+                            "comment": "TODO: merge with map ??", 
+                            "end": "\\}", 
+                            "endCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.map.end.clojure"
+                                }
+                            }, 
+                            "name": "meta.function.parameters.map.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#comment"
+                                }, 
+                                {
+                                    "include": "#metadata"
+                                }, 
+                                {
+                                    "include": "#parameters_variable"
+                                }, 
+                                {
+                                    "match": "(:as|:or|:keys|:strs|:syms)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                    "name": "keyword.operator.symbolargs.clojure"
+                                }, 
+                                {
+                                    "include": "#parameters"
+                                }, 
+                                {
+                                    "include": "#parameters_map"
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#binding_exp"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(:let|:when|:while)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.operator.symbolargs.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding.symbolargs.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#binding_exp"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "comment": "symbol matching", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding.symbole.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?<=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "variable.parameter.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#keyword"
+                                }, 
+                                {
+                                    "include": "#operator"
+                                }, 
+                                {
+                                    "include": "#number"
+                                }, 
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\])", 
+                            "patterns": [
+                                {
+                                    "include": "#binding_exp"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "[^\\s]", 
+                    "end": "[^\\]]", 
+                    "name": "invalid.illegal.bindings.clojure"
+                }
+            ]
+        }, 
+        "binding_exp": {
+            "comment": "consume bindings to the end, dual recursive with binding", 
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "include": "#operator_special"
+                }, 
+                {
+                    "begin": "(\\(\\)|{}|\\[\\]|#{})", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "constant.language.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.constant.language.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=#?\\()", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.sexp.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=#?\\()", 
+                            "end": "(?<=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#function"
+                                }, 
+                                {
+                                    "include": "#function_multi_method"
+                                }, 
+                                {
+                                    "include": "#lambda"
+                                }, 
+                                {
+                                    "include": "#macro"
+                                }, 
+                                {
+                                    "include": "#sexpr"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(\\[)", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.vector.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?<=\\[)", 
+                            "beginCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.vector.begin.clojure"
+                                }
+                            }, 
+                            "comment": "TODO: merge with vector", 
+                            "end": "\\]", 
+                            "endCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.vector.end.clojure"
+                                }
+                            }, 
+                            "name": "meta.expression.vector.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(\\{)", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.map.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?<=\\{)", 
+                            "beginCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.map.begin.clojure"
+                                }
+                            }, 
+                            "comment": "TODO: merge with map", 
+                            "end": "}", 
+                            "endCaptures": {
+                                "0": {
+                                    "name": "punctuation.definition.map.end.clojure"
+                                }
+                            }, 
+                            "name": "meta.expression.map.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=#\\{)", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.set.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#set"
+                        }, 
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=\")|(?=\\\\)|(?=\\:)|(?=\\#\")", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.string.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#string"
+                        }, 
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "comment": "symbol matching", 
+                    "end": "(?=\\])", 
+                    "name": "meta.structure.binding_exp.symbole.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?<=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "patterns": [
+                                {
+                                    "include": "#keyword"
+                                }, 
+                                {
+                                    "include": "#operator"
+                                }, 
+                                {
+                                    "include": "#number"
+                                }, 
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\])", 
+                            "patterns": [
+                                {
+                                    "include": "#binding"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "[^\\s]", 
+                    "end": "[^\\]]", 
+                    "name": "invalid.illegal.bindings.clojure"
+                }
+            ]
+        }, 
+        "bindings_form": {
+            "begin": "\\[", 
+            "comment": "bindings followed by all", 
+            "end": "(?=\\))", 
+            "name": "meta.structure.bindings.clojure", 
+            "patterns": [
+                {
+                    "begin": "(?<=\\[)", 
+                    "end": "\\]", 
+                    "patterns": [
+                        {
+                            "include": "#binding"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\])", 
+                    "end": "(?=\\))", 
+                    "patterns": [
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "comment": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.clojure"
+                        }
+                    }, 
+                    "match": "(;;).*(;;)$\\n?", 
+                    "name": "comment.line.semicolon.double.banner.clojure"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.clojure"
+                        }
+                    }, 
+                    "match": "(;;).*$\\n?", 
+                    "name": "comment.line.semicolon.double.clojure"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.clojure"
+                        }
+                    }, 
+                    "match": "^(;).*$\\n?", 
+                    "name": "comment.line.semicolon.start.clojure"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.clojure"
+                        }
+                    }, 
+                    "match": "(;).*$\\n?", 
+                    "name": "comment.line.semicolon.clojure"
+                }
+            ]
+        }, 
+        "expr": {
+            "name": "meta.expr.clojure", 
+            "patterns": [
+                {
+                    "include": "#keyword"
+                }, 
+                {
+                    "include": "#operator"
+                }, 
+                {
+                    "include": "#string"
+                }, 
+                {
+                    "include": "#vector"
+                }, 
+                {
+                    "include": "#map"
+                }, 
+                {
+                    "include": "#set"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "include": "#number"
+                }, 
+                {
+                    "include": "#symbol"
+                }
+            ]
+        }, 
+        "function": {
+            "begin": "\\(\\s*(defn\\-?)\\s", 
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type.function.type.clojure"
+                }
+            }, 
+            "end": "\\)", 
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.terminator.function.clojure"
+                }
+            }, 
+            "name": "meta.function.clojure", 
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "match": "\\s*"
+                }, 
+                {
+                    "include": "#function_name"
+                }, 
+                {
+                    "include": "#function_body_comment"
+                }
+            ]
+        }, 
+        "function_body": {
+            "patterns": [
+                {
+                    "begin": "\\(\\s*(?=\\[)", 
+                    "end": "\\)", 
+                    "name": "meta.function.body.code.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#parameters_body"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?=\\[)", 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.body.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#parameters_body"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "function_body_comment": {
+            "patterns": [
+                {
+                    "begin": "\"", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "string.quoted.double.begin.clojure"
+                        }
+                    }, 
+                    "end": "\"", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "string.quoted.double.end.clojure"
+                        }
+                    }, 
+                    "name": "string.docstring.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#string_escape"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "\\{", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.begin.clojure"
+                        }
+                    }, 
+                    "end": "\\}", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.end.clojure"
+                        }
+                    }, 
+                    "name": "meta.metadata.map.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#metadata_patterns"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#function_body"
+                }
+            ]
+        }, 
+        "function_multi_method": {
+            "begin": "\\(\\s*(defmethod\\-?)\\s+", 
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type.function.type.clojure"
+                }
+            }, 
+            "end": "\\)", 
+            "name": "meta.function.multi_method.clojure", 
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "end": "(?=\\))", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?<=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "meta.function.multi_method.name.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#function_name"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?<=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#comment"
+                                }, 
+                                {
+                                    "include": "#metadata"
+                                }, 
+                                {
+                                    "include": "#operator_special"
+                                }, 
+                                {
+                                    "begin": "(\\(\\)|{}|\\[\\]|#{})", 
+                                    "beginCaptures": {
+                                        "1": {
+                                            "name": "constant.language.clojure"
+                                        }
+                                    }, 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.constant.language.clojure", 
+                                    "patterns": [
+                                        {
+                                            "include": "#parameters_body"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?=#?\\()", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.sexp.clojure", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?=#?\\()", 
+                                            "end": "(?<=\\))", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#function"
+                                                }, 
+                                                {
+                                                    "include": "#function_multi_method"
+                                                }, 
+                                                {
+                                                    "include": "#lambda"
+                                                }, 
+                                                {
+                                                    "include": "#macro"
+                                                }, 
+                                                {
+                                                    "include": "#sexpr"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "include": "#parameters_body"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(\\[)", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.vector.clojure", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?<=\\[)", 
+                                            "beginCaptures": {
+                                                "0": {
+                                                    "name": "punctuation.definition.vector.begin.clojure"
+                                                }
+                                            }, 
+                                            "comment": "TODO: merge with vector", 
+                                            "end": "(\\])", 
+                                            "endCaptures": {
+                                                "1": {
+                                                    "name": "punctuation.definition.vector.end.clojure"
+                                                }
+                                            }, 
+                                            "name": "meta.expression.vector.clojure", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#all"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "begin": "(?<=\\])\\s*", 
+                                            "end": "(?=\\))", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#parameters_body"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(\\{)", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.map.clojure", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?<=\\{)", 
+                                            "beginCaptures": {
+                                                "0": {
+                                                    "name": "punctuation.definition.map.begin.clojure"
+                                                }
+                                            }, 
+                                            "comment": "TODO: merge with map", 
+                                            "end": "}", 
+                                            "endCaptures": {
+                                                "0": {
+                                                    "name": "punctuation.definition.map.end.clojure"
+                                                }
+                                            }, 
+                                            "name": "meta.expression.map.clojure", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#all"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "include": "#parameters_body"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?=#\\{)", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.set.clojure", 
+                                    "patterns": [
+                                        {
+                                            "include": "#set"
+                                        }, 
+                                        {
+                                            "include": "#parameters_body"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?=\")|(?=\\\\)|(?=\\:)|(?=\\#\")", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.string.clojure", 
+                                    "patterns": [
+                                        {
+                                            "include": "#string"
+                                        }, 
+                                        {
+                                            "include": "#parameters_body"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                    "comment": "symbol matching", 
+                                    "end": "(?=\\))", 
+                                    "name": "meta.structure.multi_method_exp.symbole.clojure", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                            "end": "(?<=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#symbol_java_inherited_class"
+                                                }, 
+                                                {
+                                                    "include": "#keyword"
+                                                }, 
+                                                {
+                                                    "include": "#operator"
+                                                }, 
+                                                {
+                                                    "include": "#number"
+                                                }, 
+                                                {
+                                                    "include": "#symbol"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                            "end": "(?=\\))", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#parameters_body"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "comment": "Need to match a single expression like binding-exp"
+                }
+            ]
+        }, 
+        "function_name": {
+            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+            "comment": "symbol matching", 
+            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+            "name": "entity.name.function.clojure", 
+            "patterns": [
+                {
+                    "include": "#keyword"
+                }, 
+                {
+                    "include": "#operator"
+                }, 
+                {
+                    "begin": "-(?=[a-zA-Z+!\\-_?*~#@'`/.$=])", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "keyword.operator.prefix.genclass.clojure"
+                        }
+                    }, 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "patterns": [
+                        {
+                            "include": "#symbol"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#symbol"
+                }
+            ]
+        }, 
+        "genclass_parameters": {
+            "patterns": [
+                {
+                    "include": "#gencommon_parameters"
+                }, 
+                {
+                    "begin": "(:extends)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "meta.other.genclass.extends.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_inherited_class"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(:implements)\\s+(\\[)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\]", 
+                    "name": "meta.other.genclass.implements.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_inherited_class"
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(:constructors)\\s+(\\{)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\}", 
+                    "name": "meta.other.genclass.constructors.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "\\[", 
+                            "end": "\\]", 
+                            "name": "meta.other.genclass.constructor.signature.clojure", 
+                            "patterns": [
+                                {
+                                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                    "comment": "TODO: make a rule java Class (storage)", 
+                                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                    "name": "storage.type.java.clojure", 
+                                    "patterns": [
+                                        {
+                                            "include": "#symbol"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(:exposes)\\s+(\\{)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\}", 
+                    "name": "meta.other.genclass.exposes.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "\\{", 
+                            "end": "\\}", 
+                            "name": "meta.other.genclass.exposes.get_set.clojure", 
+                            "patterns": [
+                                {
+                                    "match": ":(get|set)", 
+                                    "name": "support.other.keyword.genclass.clojure"
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "captures": {
+                        "0": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "match": ":(init|main|factory|state|prefix|load-impl-ns|implements|constructors|exposes|impl-ns|exposes-methods|methods)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])"
+                }, 
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "gencommon_parameters": {
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "begin": "(:name)\\s+(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "meta.other.genclass.name.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "entity.name.namespace.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(:methods)\\s+(\\[)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\]", 
+                    "name": "meta.other.genclass.methods.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "\\[", 
+                            "end": "\\]", 
+                            "name": "meta.other.genclass.method.signature.clojure", 
+                            "patterns": [
+                                {
+                                    "begin": "\\[", 
+                                    "end": "\\]", 
+                                    "name": "meta.other.genclass.method.args.signature.clojure", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                            "comment": "TODO: make a rule java Class (storage)", 
+                                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                                            "name": "storage.type.java.clojure", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#symbol"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "include": "#all"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=]+\\s*])", 
+                                    "end": ".|$", 
+                                    "name": "storage.type.java.genclass.return_type.clojure", 
+                                    "patterns": [
+                                        {
+                                            "include": "#symbol"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "geninterface_parameters": {
+            "patterns": [
+                {
+                    "include": "#gencommon_parameters"
+                }, 
+                {
+                    "begin": "(:extends)\\s+(\\[)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\]", 
+                    "name": "meta.other.genclass.implements.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_inherited_class"
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "keyword": {
+            "patterns": [
+                {
+                    "match": "(?<![*+!_?\\-])\\b((if-not|if|cond|do|let|loop|recur|throw|try|catch|finally|new|trampoline)\\b|(set!|swap!|compare-and-set!))(?![*+!_?\\-])", 
+                    "name": "keyword.control.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\b(monitor-enter|monitor-exit|assoc|touch|drop|take|concat|prn|into|cons|first|flatten|rest|frest|rrest|second|lazy-cat|lazy-cons|conj|await|range|iterate)\\b(?![*+!_?\\-])", 
+                    "name": "keyword.other.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\b(str|print(ln)?|eval|def|defmacro|defn|quote|var|fn|defmulti|defmethod|map|list|hash-map|vector|agent|declare|intern|macroexpand|macroexpand-1)\\b(?![*+!_?\\-])", 
+                    "name": "storage.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\b(->|\\.\\.|amap|and|areduce|assert|binding|comment|cond|definline|(def[a-z\\-]*)|defmatch|defmethod|defmulti|defn|defn-|defonce|defstruct|delay|doc|doseq|dosync|dotimes|doto|fn|for|if-let|lazy-cons|let|locking|loop|memfn|ns|or|prefer-method|proxy-super|proxy|refer-clojure|remove-method|sync|time|when-first|when-let|when-not|when|while|with-in-str|with-local-vars|with-open|with-out-str|with-precision|memoize)\\b(?![*+!_?\\-])", 
+                    "name": "support.function.match.clojure"
+                }, 
+                {
+                    "captures": {
+                        "2": {
+                            "name": "keyword.other.mark.clojure"
+                        }
+                    }, 
+                    "match": "(?<![*+!_?\\-])\\b(rational|associative|branch|class|coll|contains|decimal|delay|distinct|empty|end|even|every|false|float|fn|identical|instance|integer|isa|keyword|list|map|neg|nil|not-any|not-every|number|odd|pos|ratio|reversible|seq|sequential|set|sorted|special-symbol|string|symbol|true|var|zero|vector|ifn)(\\?)(?![*+!_?\\-])", 
+                    "name": "support.function.tester.clojure"
+                }, 
+                {
+                    "captures": {
+                        "2": {
+                            "name": "keyword.other.mark.clojure"
+                        }, 
+                        "3": {
+                            "name": "keyword.other.mark.clojure"
+                        }, 
+                        "4": {
+                            "name": "keyword.other.mark.clojure"
+                        }
+                    }, 
+                    "match": "(?<![*+!_?\\-])\\b(not(=)|list(\\*)|io(!))(?![*+!_?\\-])", 
+                    "name": "support.function.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\b(zipper|zipmap|xml-zip|xml-seq|with-meta|vector-zip|vector|vec|var-set|var-get|vals|val|use|update-proxy|update-in|up|union|underive|unchecked-subtract|unchecked-negate|unchecked-multiply|unchecked-inc|unchecked-divide|unchecked-dec|unchecked-add|tree-seq|to-array-2d|to-array|test|take-while|take-nth|symbol|supers|subvec|subseq|subs|struct-map|struct|str|split-with|split-at|sorted-set|sorted-map-by|sorted-map|sort-by|sort|some|slurp|shutdown-agents|short|set-validator|set|seque|seq-zip|seq|send-off|send|select-keys|select|rsubseq|rseq|root|rights|right|rfirst|reverse|resultset-seq|resolve|require|replicate|replace|repeatedly|repeat|rename-keys|rename|remove-ns|remove|rem|refer|ref-set|ref|reduce|read-string|read-line|read|re-seq|re-pattern|re-matches|re-matcher|re-groups|re-find|rationalize|rand-int|rand|quot|pvec|psummary|psort|proxy-mappings|project|prn-str|println-str|println|printf|print-str|print|preduce|pr-str|pr|pop|pmin|pmax|pmap|pfilter-nils|pfilter-dupes|peek|pdistinct|path|partition|partial|parse|parents|par|pany|num|nthrest|nth|ns-unmap|ns-unalias|ns-resolve|ns-refers|ns-publics|ns-name|ns-map|ns-interns|ns-imports|ns-aliases|not=|not-empty|not|node|next|newline|namespace|name|min-key|min|meta|merge-with|merge|max-key|max|matchexpand-1|matchexpand|mapcat|map-invert|map|make-node|make-hierarchy|make-array|long-array|long|loaded-libs|load-string|load-reader|load-file|load|list*|list|line-seq|lefts|left|last|keyword|keys|key|join|iterator-seq|into-array|intersection|interpose|interleave|int-array|int|inspect-tree|inspect-table|insert-right|insert-left|insert-child|index|inc|in-ns|import|identity|hash-set|hash-map|hash|get-validator|get-proxy-class|get-in|get|gensym|gen-class|gen-interface|gen-and-save-class|gen-and-load-class|format|force|fnseq|flush|float-array|float|find-var|find-ns|find-doc|find|filter|file-seq|ffirst|eval|enumeration-seq|ensure|empty|edit|drop-while|drop-last|down|double-array|double|dorun|doall|distinct|dissoc|disj|difference|descendants|derive|deref|dec|cycle|create-struct|create-ns|count|construct-proxy|constantly|conj|complement|compare|comparator|comp|commute|clojure.set|clojure.parallel|clojure.inspector|clear-agent-errors|class|children|char|cast|cache-seq|byte|butlast|boolean|bit-xor|bit-test|bit-shift-right|bit-shift-left|bit-set|bit-or|bit-not|bit-flip|bit-clear|bit-and-not|bit-and|bigint|bigdec|bean|bases|await-for|assoc-in|aset-short|aset-long|aset-int|aset-float|aset-double|aset-char|aset-byte|aset-boolean|aset|array-map|apply|append-child|ancestors|alter-var-root|alter|all-ns|alias|alength|aget|agent-errors|agent|add-classpath|aclone|accessor|compile|longs|doubles|ints|floats|atom)\\b(?![*+!_?\\-])", 
+                    "name": "support.function.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\b(true|false|nil)\\b(?![*+!_?\\-])", 
+                    "name": "constant.language.clojure"
+                }, 
+                {
+                    "match": "(\\(\\)|{}|\\[\\]|#{})", 
+                    "name": "constant.language.clojure"
+                }, 
+                {
+                    "comment": "TODO : clean this ?", 
+                    "match": "(?<![*+!_?\\-])\\b:(private|doc|test|tag)\\b(?![*+!_?\\-])", 
+                    "name": "storage.modifier.clojure"
+                }, 
+                {
+                    "comment": "TODO : clean this ?", 
+                    "match": "(?<![*+!_?\\-])\\b:(file|line|name|ns|match|argslist)\\b(?![*+!_?\\-])", 
+                    "name": "support.variable.clojure"
+                }, 
+                {
+                    "match": "(?<![*+!_?\\-])\\*(agent|allow-unresolved-vars|command-line-args|compile-files|compile-path|err|file|flush-on-newline|in|macro-meta|math-context|ns|out|print-dup|print-length|print-level|print-meta|print-readably|proxy-classes|use-context-classloader|warn-on-reflection)\\*(?![*+!_?\\-])", 
+                    "name": "support.variable.global.clojure"
+                }
+            ]
+        }, 
+        "lambda": {
+            "patterns": [
+                {
+                    "begin": "\\(\\s*(fn)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.type.function.type.clojure"
+                        }
+                    }, 
+                    "end": "\\)", 
+                    "name": "meta.function.lambda.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#comment"
+                        }, 
+                        {
+                            "include": "#function_name"
+                        }, 
+                        {
+                            "include": "#function_body"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(#)\\(", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.type.function.type.clojure"
+                        }
+                    }, 
+                    "end": "\\)", 
+                    "name": "meta.function.lambda.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#sexpr_special"
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "macro": {
+            "begin": "\\(\\s*(\\b(defmacro\\-?))\\s+", 
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type.function.type.clojure"
+                }
+            }, 
+            "end": "\\)", 
+            "name": "meta.function.macro.clojure", 
+            "patterns": [
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "match": "\\s*"
+                }, 
+                {
+                    "include": "#function_name"
+                }, 
+                {
+                    "include": "#function_body_comment"
+                }
+            ]
+        }, 
+        "map": {
+            "begin": "{(?!})", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.map.begin.clojure"
+                }
+            }, 
+            "end": "(?<!{)}", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.map.end.clojure"
+                }
+            }, 
+            "name": "meta.expression.map.clojure", 
+            "patterns": [
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "metadata": {
+            "patterns": [
+                {
+                    "begin": "#?\\^{", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.begin.clojure"
+                        }
+                    }, 
+                    "end": "}", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.end.clojure"
+                        }
+                    }, 
+                    "name": "punctuation.metadata.map.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#metadata_patterns"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "#?\\^\"", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.begin.clojure"
+                        }
+                    }, 
+                    "end": "\"", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "comment.punctuation.definition.metadata.end.clojure"
+                        }
+                    }, 
+                    "name": "string.metadata.clojure"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "comment.punctuation.definition.metadata.begin.clojure"
+                        }, 
+                        "2": {
+                            "name": "storage.type.java.clojure"
+                        }
+                    }, 
+                    "match": "(#?\\^)([a-zA-Z+!\\-_?0-9*/.$=]+)", 
+                    "name": "punctuation.metadata.class.clojure"
+                }
+            ]
+        }, 
+        "metadata_patterns": {
+            "patterns": [
+                {
+                    "match": "(:tag|:doc|:arglists|:private|:macro|:name|:ns|:inline-arities|:inline|:line|:file)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "support.other.keyword.namespace.clojure"
+                }, 
+                {
+                    "match": "(?<=:tag)\\s+([a-zA-Z+!\\-_?0-9*/.$=]+)", 
+                    "name": "storage.type.java.clojure"
+                }, 
+                {
+                    "begin": "(?<=:doc)\\s+\"", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "string.quoted.double.begin.clojure"
+                        }
+                    }, 
+                    "end": "\"", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "string.quoted.double.end.clojure"
+                        }
+                    }, 
+                    "name": "string.docstring.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#string_escape"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "namespace": {
+            "begin": "\\(\\s*(ns)\\b", 
+            "beginCaptures": {
+                "1": {
+                    "name": "support.function.namespace.clojure"
+                }
+            }, 
+            "end": "\\)", 
+            "name": "meta.function.namespace.clojure", 
+            "patterns": [
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "entity.name.namespace.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#namespace_body"
+                }
+            ]
+        }, 
+        "namespace_body": {
+            "patterns": [
+                {
+                    "match": "(:refer-clojure|:require|:use|:import|:load|:exclude|:as|:only)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "support.other.keyword.namespace.clojure"
+                }, 
+                {
+                    "begin": "\\(\\s*(:gen-class)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.other.keyword.genclass.clojure"
+                        }
+                    }, 
+                    "end": "\\)", 
+                    "name": "meta.function.genclass_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#genclass_parameters"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#symbol"
+                }, 
+                {
+                    "include": "#string"
+                }, 
+                {
+                    "begin": "\\(", 
+                    "end": "\\)", 
+                    "patterns": [
+                        {
+                            "include": "#namespace_body"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "\\[", 
+                    "end": "\\]", 
+                    "patterns": [
+                        {
+                            "include": "#namespace_body"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "number": {
+            "patterns": [
+                {
+                    "captures": {
+                        "2": {
+                            "name": "keyword.operator.arithmetic.ratio.clojure"
+                        }
+                    }, 
+                    "match": "(-|\\+)?\\b[0-9]+(/)[0-9]+\\b", 
+                    "name": "constant.numeric.float.ratio.clojure"
+                }, 
+                {
+                    "match": "[-+]?\\b[0-9]+((\\.[0-9]+([eE][-+]?[0-9]+)?)|((\\.[0-9]+)?[eE][-+]?[0-9]+))?\\b", 
+                    "name": "constant.numeric.float.clojure"
+                }, 
+                {
+                    "match": "[-+]?\\b[0-9]+(((\\.[0-9])?+([eE][-+]?[0-9]+)?)|((\\.[0-9]+)?[eE][-+]?[0-9]+))[M]?\\b", 
+                    "name": "constant.numeric.big_decimal.clojure"
+                }, 
+                {
+                    "captures": {
+                        "2": {
+                            "name": "keyword.operator.arithmetic.octal.clojure"
+                        }, 
+                        "4": {
+                            "name": "invalid.illegal.integer.octal.clojure"
+                        }, 
+                        "5": {
+                            "name": "invalid.illegal.integer.octal.clojure"
+                        }
+                    }, 
+                    "match": "(-|\\+)?\\b(0)([0-7]+|([89]))([0-9]*)\\b", 
+                    "name": "constant.numeric.integer.octal.clojure"
+                }, 
+                {
+                    "match": "(-|\\+)?\\b[0-9]+\\b", 
+                    "name": "constant.numeric.integer.clojure"
+                }, 
+                {
+                    "captures": {
+                        "2": {
+                            "name": "keyword.operator.arithmetic.hexa.clojure"
+                        }
+                    }, 
+                    "match": "(-|\\+)?\\b(0[xX])[0-9A-Fa-f]+\\b", 
+                    "name": "constant.numeric.integer.hexa.clojure"
+                }
+            ]
+        }, 
+        "operator": {
+            "patterns": [
+                {
+                    "match": "(?<![a-zA-Z0-9*+!_?\\-])(\\*|/|\\<|\\<=|=|==|\\>|\\>=|-\\>)(?![a-zA-Z0-9*+!_?\\-])", 
+                    "name": "keyword.operator.clojure"
+                }, 
+                {
+                    "match": "(?<![a-zA-Z0-9*+!_?\\-])(-|\\+)(?![a-zA-Z0-9*+!_?\\-])", 
+                    "name": "keyword.operator.clojure"
+                }, 
+                {
+                    "match": "(?<![a-zA-Z0-9*+!_?\\-])(\\.|\\.\\.)(?![a-zA-Z0-9*+!_?\\-])", 
+                    "name": "keyword.operator.class.clojure"
+                }, 
+                {
+                    "match": "%(\\d+|&)?", 
+                    "name": "variable.parameter.literal.clojure"
+                }, 
+                {
+                    "include": "#operator_special"
+                }
+            ]
+        }, 
+        "operator_special": {
+            "patterns": [
+                {
+                    "match": "`|~@|~", 
+                    "name": "keyword.control.operator.clojure"
+                }, 
+                {
+                    "match": "#'|@", 
+                    "name": "storage.type.function.type.clojure"
+                }, 
+                {
+                    "match": "'", 
+                    "name": "constant.other.quote"
+                }, 
+                {
+                    "match": "\\^", 
+                    "name": "constant.other.metadata.read.clojure"
+                }
+            ]
+        }, 
+        "parameters": {
+            "begin": "\\[", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.begin.clojure"
+                }
+            }, 
+            "end": "\\]", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.end.clojure"
+                }
+            }, 
+            "name": "meta.parameters.vector.clojure", 
+            "patterns": [
+                {
+                    "match": "\\&", 
+                    "name": "keyword.operator.varargs.clojure"
+                }, 
+                {
+                    "match": "(:as)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "keyword.operator.symbolargs.clojure"
+                }, 
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "include": "#parameters_variable"
+                }, 
+                {
+                    "include": "#parameters"
+                }, 
+                {
+                    "include": "#parameters_map"
+                }
+            ]
+        }, 
+        "parameters_body": {
+            "name": "meta.function.body", 
+            "patterns": [
+                {
+                    "include": "#parameters_function"
+                }, 
+                {
+                    "begin": "(?<=\\])", 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.body.code.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "parameters_function": {
+            "begin": "\\[", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.begin.clojure"
+                }
+            }, 
+            "end": "\\]", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.end.clojure"
+                }
+            }, 
+            "name": "meta.function.parameters.vector.clojure", 
+            "patterns": [
+                {
+                    "match": "\\&", 
+                    "name": "keyword.operator.varargs.clojure"
+                }, 
+                {
+                    "match": "(:as)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "keyword.operator.symbolargs.clojure"
+                }, 
+                {
+                    "include": "#comment"
+                }, 
+                {
+                    "include": "#metadata"
+                }, 
+                {
+                    "include": "#parameters_variable"
+                }, 
+                {
+                    "include": "#parameters"
+                }, 
+                {
+                    "include": "#parameters_map"
+                }
+            ]
+        }, 
+        "parameters_map": {
+            "begin": "\\{", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.map.begin.clojure"
+                }
+            }, 
+            "end": "\\}", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.map.end.clojure"
+                }
+            }, 
+            "name": "meta.function.parameters.map.clojure", 
+            "patterns": [
+                {
+                    "include": "#parameters_variable"
+                }, 
+                {
+                    "match": "(:as|:or|:keys|:strs|:syms)(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "keyword.operator.symbolargs.clojure"
+                }, 
+                {
+                    "include": "#parameters"
+                }, 
+                {
+                    "include": "#parameters_map"
+                }, 
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "parameters_variable": {
+            "begin": "(?=[a-zA-Z+!\\-_?0-9*~@'`/.$=])", 
+            "comment": "symbol matching TODO:operator number => error ?", 
+            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+            "name": "variable.parameter.clojure", 
+            "patterns": [
+                {
+                    "include": "#keyword"
+                }, 
+                {
+                    "include": "#operator"
+                }, 
+                {
+                    "include": "#number"
+                }, 
+                {
+                    "include": "#symbol"
+                }
+            ]
+        }, 
+        "set": {
+            "begin": "#{", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.set.begin.clojure"
+                }
+            }, 
+            "end": "}", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.set.end.clojure"
+                }
+            }, 
+            "name": "meta.expression.set.clojure", 
+            "patterns": [
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "sexpr": {
+            "begin": "\\((?!\\))", 
+            "end": "(?<!\\()\\)", 
+            "name": "meta.sexpr.clojure", 
+            "patterns": [
+                {
+                    "include": "#sexpr_special"
+                }, 
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "sexpr_special": {
+            "patterns": [
+                {
+                    "begin": "(?<=\\()\\s*(let|loop|doseq|dotimes|binding|for|if-let|when-let|with-local-vars|with-open)\\s+(?=\\[)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.control.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.let_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#bindings_form"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(def|declare|defstruct|defonce|defmulti)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.type.variable.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.def_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#metadata"
+                        }, 
+                        {
+                            "match": "\\s*"
+                        }, 
+                        {
+                            "include": "#function_name"
+                        }, 
+                        {
+                            "begin": "(?<=$|.)", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(prefer-method)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.type.variable.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.def_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#metadata"
+                        }, 
+                        {
+                            "match": "\\s*"
+                        }, 
+                        {
+                            "include": "#function_name"
+                        }, 
+                        {
+                            "begin": "(?<=$|.)", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol_java_inherited_class"
+                                }, 
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(instance(\\?))\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.function.tester.clojure"
+                        }, 
+                        "2": {
+                            "name": "keyword.other.mark.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.isInstance_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_class_form_body"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(cast)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.function.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.cast_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_class_form_body"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*((new)\\s+|(?=[a-zA-Z][a-zA-Z.]*\\.(\\s+|$|\\))))", 
+                    "beginCaptures": {
+                        "2": {
+                            "name": "keyword.control.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.new_form.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=([a-z]+\\.)*[A-Z][a-zA-Z]*(\\$[A-Z][a-zA-Z]*)?)", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "storage.type.java.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*((\\.\\.?)\\s+(?=([a-z]+\\.)*[A-Z][a-zA-Z]*(\\$[A-Z][a-zA-Z]*)?))", 
+                    "beginCaptures": {
+                        "2": {
+                            "name": "keyword.control.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.member_access_form.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "storage.type.java.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(gen-class)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.function.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.genclass_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#genclass_parameters"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(gen-interface)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "support.function.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.geninterface_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#geninterface_parameters"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*((catch)\\s+)", 
+                    "beginCaptures": {
+                        "2": {
+                            "name": "keyword.control.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.catch_form.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol_java_class_form_body"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "\\s+(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "variable.parameter.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(((set|swap|compare-and-set)(\\!))\\s+)", 
+                    "beginCaptures": {
+                        "2": {
+                            "name": "keyword.control.clojure"
+                        }, 
+                        "3": {
+                            "name": "keyword.other.mark.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.setvar_form.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "name": "variable.parameter.clojure", 
+                            "patterns": [
+                                {
+                                    "include": "#symbol"
+                                }
+                            ]
+                        }, 
+                        {
+                            "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#all"
+                                }
+                            ]
+                        }, 
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?<=\\()\\s*(proxy)\\s+", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.control.clojure"
+                        }
+                    }, 
+                    "end": "(?=\\))", 
+                    "name": "meta.function.proxy_form.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#comment"
+                        }, 
+                        {
+                            "begin": "(?=\\[)", 
+                            "end": "(?=\\))", 
+                            "patterns": [
+                                {
+                                    "include": "#comment"
+                                }, 
+                                {
+                                    "begin": "\\[", 
+                                    "end": "\\]", 
+                                    "patterns": [
+                                        {
+                                            "begin": "(?=([a-z]+\\.)*[A-Z][a-zA-Z]*)", 
+                                            "end": "(?![a-zA-Z.])", 
+                                            "name": "entity.other.inherited-class.java.proxy.clojure", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#symbol"
+                                                }
+                                            ]
+                                        }, 
+                                        {
+                                            "include": "#all"
+                                        }
+                                    ]
+                                }, 
+                                {
+                                    "begin": "(?<=\\])", 
+                                    "end": "(?=\\))", 
+                                    "patterns": [
+                                        {
+                                            "include": "#comment"
+                                        }, 
+                                        {
+                                            "begin": "(?=\\[)", 
+                                            "end": "(?=\\))", 
+                                            "name": "meta.function.body.proxy_form.clojure", 
+                                            "patterns": [
+                                                {
+                                                    "include": "#comment"
+                                                }, 
+                                                {
+                                                    "include": "#parameters"
+                                                }, 
+                                                {
+                                                    "begin": "(?<=\\])", 
+                                                    "end": "(?=\\))", 
+                                                    "patterns": [
+                                                        {
+                                                            "include": "#comment"
+                                                        }, 
+                                                        {
+                                                            "begin": "\\(\\s*", 
+                                                            "end": "\\)", 
+                                                            "name": "meta.function.proxy.method.clojure", 
+                                                            "patterns": [
+                                                                {
+                                                                    "include": "#comment"
+                                                                }, 
+                                                                {
+                                                                    "include": "#function_name"
+                                                                }, 
+                                                                {
+                                                                    "include": "#function_body_comment"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "string": {
+            "patterns": [
+                {
+                    "begin": "\"", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.begin.clojure"
+                        }
+                    }, 
+                    "end": "\"", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.end.clojure"
+                        }
+                    }, 
+                    "name": "string.quoted.double.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#string_escape"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "\\\\(u[0-9a-fA-F]{4}|newline|tab|space|backspace|formfeed|return|[^\\s])", 
+                    "name": "constant.character.escape.clojure"
+                }, 
+                {
+                    "begin": "(\\:{1,2})(?=[a-zA-Z+!\\-_?0-9*/.$=])", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "keyword.operator.symbole.clojure"
+                        }
+                    }, 
+                    "comment": ". is OK in symbol ?", 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "name": "constant.string.symbole.clojure", 
+                    "patterns": [
+                        {
+                            "include": "#symbol"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "#\"", 
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.begin.clojure"
+                        }
+                    }, 
+                    "end": "\"", 
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.end.clojure"
+                        }
+                    }, 
+                    "name": "string.regexp.clojure", 
+                    "patterns": [
+                        {
+                            "include": "source.regexp.oniguruma"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "string_escape": {
+            "captures": {
+                "2": {
+                    "name": "invalid.illegal.escape.string.clojure"
+                }
+            }, 
+            "match": "\\\\(u[0-9a-fA-F]{4}|b|t|n|f|r|\"|'|\\\\|[0-3]?[0-7]{1,2}|(.))", 
+            "name": "constant.character.escape.clojure"
+        }, 
+        "symbol": {
+            "patterns": [
+                {
+                    "match": "\\b[A-Z_]{2,}\\b", 
+                    "name": "constant.other.java.clojure"
+                }, 
+                {
+                    "match": "(?<![a-zA-Z+!\\-_?0-9*])\\*[a-z\\-]{2,}\\*(?![a-zA-Z+!\\-_?0-9*])", 
+                    "name": "source.symbol.global.clojure"
+                }, 
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*=])", 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*=])", 
+                    "name": "source.symbol.clojure", 
+                    "patterns": [
+                        {
+                            "begin": "[0-9]", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*=])", 
+                            "name": "invalid.illegal.symbol.clojure"
+                        }, 
+                        {
+                            "begin": "[a-zA-Z]", 
+                            "end": "([+!\\-_?*=#])?(?![a-zA-Z+!\\-_?0-9*=])", 
+                            "endCaptures": {
+                                "1": {
+                                    "name": "keyword.other.mark.clojure"
+                                }
+                            }
+                        }, 
+                        {
+                            "begin": "[+!\\-_?*=]", 
+                            "end": "(?![a-zA-Z+!\\-_?0-9*=])"
+                        }
+                    ]
+                }, 
+                {
+                    "match": "(?<=[a-zA-Z+!\\-_?0-9*])\\.(?=[a-zA-Z+!\\-_?0-9*])", 
+                    "name": "keyword.operator.classpath.clojure"
+                }, 
+                {
+                    "match": "(?<=[a-zA-Z+!\\-_?0-9*])(/|\\$)(?=[a-zA-Z+!\\-_?0-9*])", 
+                    "name": "keyword.operator.qualified.clojure"
+                }
+            ]
+        }, 
+        "symbol_java_class": {
+            "begin": "(?=([a-z]+\\.)*[A-Z][a-zA-Z]*(\\$[A-Z][a-zA-Z]*)?)", 
+            "comment": "TODO : use it", 
+            "end": "(?![a-zA-Z.$])", 
+            "name": "storage.type.java.clojure", 
+            "patterns": [
+                {
+                    "include": "#symbol"
+                }
+            ]
+        }, 
+        "symbol_java_class_form_body": {
+            "patterns": [
+                {
+                    "begin": "(?=[a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "end": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "patterns": [
+                        {
+                            "include": "#symbol_java_inherited_class"
+                        }
+                    ]
+                }, 
+                {
+                    "begin": "(?![a-zA-Z+!\\-_?0-9*~#@'`/.$=])", 
+                    "end": "(?=\\))", 
+                    "patterns": [
+                        {
+                            "include": "#all"
+                        }
+                    ]
+                }, 
+                {
+                    "include": "#all"
+                }
+            ]
+        }, 
+        "symbol_java_inherited_class": {
+            "begin": "(?=([a-z]+\\.)*[A-Z][a-zA-Z]*(\\$[A-Z][a-zA-Z]*)?)", 
+            "end": "(?![a-zA-Z.$])", 
+            "name": "entity.other.inherited-class.java.clojure", 
+            "patterns": [
+                {
+                    "include": "#symbol"
+                }
+            ]
+        }, 
+        "vector": {
+            "begin": "\\[(?!\\])", 
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.begin.clojure"
+                }
+            }, 
+            "end": "(?<!\\[)\\]", 
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.vector.end.clojure"
+                }
+            }, 
+            "name": "meta.expression.vector.clojure", 
+            "patterns": [
+                {
+                    "include": "#all"
+                }
+            ]
+        }
+    }, 
+    "scopeName": "source.clojure", 
+    "uuid": "6A87759F-F746-4E84-B788-965B46363202"
+}

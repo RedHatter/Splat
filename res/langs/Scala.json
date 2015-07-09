@@ -1,0 +1,418 @@
+{
+    "bundleUUID": "452017E8-0065-49EF-AB9D-7849B27D9367", 
+    "fileTypes": [
+        "scala"
+    ], 
+    "foldingStartMarker": "/\\*\\*|\\{\\s*$", 
+    "foldingStopMarker": "\\*\\*/|^\\s*\\}", 
+    "keyEquivalent": "^~S", 
+    "name": "Scala", 
+    "patterns": [
+        {
+            "include": "#storage-modifiers"
+        }, 
+        {
+            "include": "#keywords"
+        }, 
+        {
+            "include": "#declarations"
+        }, 
+        {
+            "include": "#inheritance"
+        }, 
+        {
+            "include": "#imports"
+        }, 
+        {
+            "include": "#comments"
+        }, 
+        {
+            "include": "#block-comments"
+        }, 
+        {
+            "include": "#strings"
+        }, 
+        {
+            "include": "#initialization"
+        }, 
+        {
+            "include": "#constants"
+        }, 
+        {
+            "include": "#char-literal"
+        }, 
+        {
+            "include": "#scala-symbol"
+        }, 
+        {
+            "include": "#empty-parentheses"
+        }, 
+        {
+            "include": "#parameter-list"
+        }, 
+        {
+            "include": "#qualifiedClassName"
+        }, 
+        {
+            "include": "#xml-literal"
+        }
+    ], 
+    "repository": {
+        "block-comments": {
+            "begin": "/\\*", 
+            "end": "\\*/", 
+            "name": "comment.block.scala", 
+            "patterns": [
+                {
+                    "include": "#block-comments"
+                }, 
+                {
+                    "match": "(?x)\n\t\t\t(?! /\\*)\n\t\t\t(?! \\*/)\n\t\t  "
+                }
+            ]
+        }, 
+        "char-literal": {
+            "match": "'\\\\?.'", 
+            "name": "constant.character.literal.scala"
+        }, 
+        "comments": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "punctuation.definition.comment.scala"
+                        }
+                    }, 
+                    "match": "(//).*$\\n?", 
+                    "name": "comment.line.double-slash.scala"
+                }, 
+                {
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scala"
+                        }
+                    }, 
+                    "match": "/\\*\\*/", 
+                    "name": "comment.block.empty.scala"
+                }, 
+                {
+                    "begin": "(^\\s*)?/\\*\\*", 
+                    "captures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.scala"
+                        }
+                    }, 
+                    "end": "\\*/(\\s*\\n)?", 
+                    "name": "comment.block.documentation.scala", 
+                    "patterns": [
+                        {
+                            "match": "(@\\w+\\s)", 
+                            "name": "keyword.other.documentation.scaladoc.scala"
+                        }, 
+                        {
+                            "match": "\\{@link\\s+[^\\}]*\\}", 
+                            "name": "keyword.other.documentation.scaladoc.link.scala"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "constants": {
+            "patterns": [
+                {
+                    "match": "\\b(false|null|true|Nil|None)\\b", 
+                    "name": "constant.language.scala"
+                }, 
+                {
+                    "match": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)([LlFfUuDd]|UL|ul)?\\b", 
+                    "name": "constant.numeric.scala"
+                }, 
+                {
+                    "match": "\\b(this|super|self)\\b", 
+                    "name": "variable.language.scala"
+                }, 
+                {
+                    "match": "\\b(Unit|Boolean|Byte|Char|Short|Int|Float|Long|Double)\\b", 
+                    "name": "storage.type.primitive.scala"
+                }
+            ]
+        }, 
+        "declarations": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "2": {
+                            "name": "entity.name.function.declaration"
+                        }
+                    }, 
+                    "match": "(?x)\n\t\t\t\t\t\t\\b(def)\\s+\n\t\t\t\t\t\t(([a-zA-Z$_][a-zA-Z0-9$_]*(_[^a-zA-Z0-9\\s]+)?)|`.*`|[^\\w\\[\\(\\:\\_\\s]+)"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "2": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "3": {
+                            "name": "entity.name.class.declaration"
+                        }
+                    }, 
+                    "match": "(case)?\\b(class|trait|object)\\s+([^\\s\\{\\(\\[]+)"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "2": {
+                            "name": "entity.name.type.declaration"
+                        }
+                    }, 
+                    "match": "\\b(type)\\s+(([a-zA-Z$_][a-zA-Z0-9$_]*(_[^a-zA-Z0-9\\s]+)?)|`.*`)"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.stable.scala"
+                        }, 
+                        "2": {
+                            "name": "keyword.declaration.volatile.scala"
+                        }, 
+                        "3": {
+                            "name": "entity.name.val.declaration"
+                        }
+                    }, 
+                    "match": "\\b(?:(val)|(var))\\s+(([a-zA-Z$_][a-zA-Z0-9$_]*(_[^a-zA-Z0-9\\s]+)?)|`.*`)?"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "2": {
+                            "name": "entity.name.class.declaration"
+                        }
+                    }, 
+                    "match": "\\b(package object)\\s+([^\\s\\{\\(\\[]+)"
+                }, 
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.other.scoping.scala"
+                        }, 
+                        "2": {
+                            "name": "entity.name.package.scala"
+                        }
+                    }, 
+                    "match": "\\b(package)\\s+([\\w\\.]+)", 
+                    "name": "meta.package.scala"
+                }
+            ]
+        }, 
+        "empty-parentheses": {
+            "match": "\\(\\)", 
+            "name": "meta.parentheses.scala"
+        }, 
+        "imports": {
+            "begin": "\\b(import)\\s+", 
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.other.import.scala"
+                }
+            }, 
+            "end": "(?<=[\\n;])", 
+            "name": "meta.import.scala", 
+            "patterns": [
+                {
+                    "include": "#comments"
+                }, 
+                {
+                    "match": "([^\\s{;.]+)\\s*\\.\\s*", 
+                    "name": "variable.package.scala"
+                }, 
+                {
+                    "match": "([^\\s{;.]+)\\s*", 
+                    "name": "variable.import.scala"
+                }, 
+                {
+                    "begin": "{", 
+                    "end": "}", 
+                    "name": "meta.import.selector.scala", 
+                    "patterns": [
+                        {
+                            "captures": {
+                                "1": {
+                                    "name": "variable.import.renamed-from.scala"
+                                }, 
+                                "2": {
+                                    "name": "keyword.other.arrow.scala"
+                                }, 
+                                "3": {
+                                    "name": "variable.import.renamed-to.scala"
+                                }
+                            }, 
+                            "match": "(?x) \\s*\n\t\t\t\t([^\\s.,}]+) \\s*\n\t\t\t\t(=>) \\s*\n\t\t\t\t([^\\s.,}]+) \\s*\n\t\t\t  "
+                        }, 
+                        {
+                            "match": "([^\\s.,}]+)", 
+                            "name": "variable.import.scala"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "inheritance": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "keyword.declaration.scala"
+                        }, 
+                        "2": {
+                            "name": "entity.other.inherited-class.scala"
+                        }
+                    }, 
+                    "match": "(extends|with)\\s+([^\\s\\{\\(\\[\\]]+)"
+                }
+            ]
+        }, 
+        "initialization": {
+            "captures": {
+                "1": {
+                    "name": "keyword"
+                }, 
+                "2": {
+                    "name": "entity.name.class"
+                }
+            }, 
+            "match": "\\b(new)\\s+([^\\s\\{\\(\\[]+)"
+        }, 
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "\\b(return|throw)\\b", 
+                    "name": "keyword.control.flow.jump.scala"
+                }, 
+                {
+                    "match": "\\b(else|if|do|while|for|yield|match|case)\\b", 
+                    "name": "keyword.control.flow.scala"
+                }, 
+                {
+                    "match": "\\b(catch|finally|try)\\b", 
+                    "name": "keyword.control.exception.scala"
+                }
+            ]
+        }, 
+        "parameter-list": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "variable.parameter"
+                        }, 
+                        "2": {
+                            "name": "entity.name.class"
+                        }
+                    }, 
+                    "match": "([a-zA-Z$_][a-zA-Z0-9$_]*)\\s*:\\s*([A-Za-z0-9][\\w|_|?|\\.]*)?,?"
+                }
+            ]
+        }, 
+        "qualifiedClassName": {
+            "captures": {
+                "1": {
+                    "name": "entity.name.class"
+                }
+            }, 
+            "match": "(\\b([A-Z][\\w]*))"
+        }, 
+        "scala-symbol": {
+            "captures": {
+                "1": {
+                    "name": "entity.name.symbol"
+                }
+            }, 
+            "match": "('\\w+)"
+        }, 
+        "storage-modifiers": {
+            "patterns": [
+                {
+                    "match": "\\b(private\\[\\S+\\]|protected\\[\\S+\\]|private|protected)\\b", 
+                    "name": "storage.modifier.access"
+                }, 
+                {
+                    "match": "\\b(synchronized|@volatile|abstract|final|lazy|sealed|implicit|override|@transient|@native)\\b", 
+                    "name": "storage.modifier.other"
+                }
+            ]
+        }, 
+        "strings": {
+            "patterns": [
+                {
+                    "begin": "\"\"\"", 
+                    "end": "\"\"\"", 
+                    "name": "string.quoted.triple.scala"
+                }, 
+                {
+                    "begin": "(?<!\\\\)\"", 
+                    "end": "\"", 
+                    "name": "string.quoted.double.scala", 
+                    "patterns": [
+                        {
+                            "match": "\\n", 
+                            "name": "invalid.string.newline"
+                        }, 
+                        {
+                            "match": "\\\\.", 
+                            "name": "constant.character.escape.scala"
+                        }
+                    ]
+                }
+            ]
+        }, 
+        "xml-attribute": {
+            "patterns": [
+                {
+                    "captures": {
+                        "1": {
+                            "name": "entity.other.attribute-name"
+                        }, 
+                        "2": {
+                            "name": "string.quoted.double"
+                        }
+                    }, 
+                    "match": "(\\w+)=(\"[^\"]*\")"
+                }
+            ]
+        }, 
+        "xml-literal": {
+            "patterns": [
+                {
+                    "begin": "</?([a-zA-Z0-9]+)", 
+                    "beginCaptures": {
+                        "1": {
+                            "name": "entity.name.tag"
+                        }
+                    }, 
+                    "end": "/?>", 
+                    "name": "text.xml", 
+                    "patterns": [
+                        {
+                            "include": "#xml-literal"
+                        }, 
+                        {
+                            "include": "#xml-attribute"
+                        }
+                    ]
+                }
+            ]
+        }
+    }, 
+    "scopeName": "source.scala", 
+    "uuid": "158C0929-299A-40C8-8D89-316BE0C446E8"
+}
