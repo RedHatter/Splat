@@ -1,0 +1,20 @@
+{
+	"font_face" : "monospace",
+	"font_size" : 18,
+	"menu": {
+		"File": {
+			"New": {
+				"command": "document.new",
+				"id": "document.new",
+				"accel": "<ctl>n"
+			}
+		}
+	},
+	"plugins": {
+		"docuemnt": {
+			"name": "Document",
+			"description": "Provides a Gtk.TextView and accompanying commands.",
+			"enabled": true
+		}
+	}
+}
