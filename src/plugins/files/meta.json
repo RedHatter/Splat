@@ -1,0 +1,28 @@
+{
+	"menu": {
+		"File": {
+			"Open": {
+				"command": "files.open [files.dialog]",
+				"id": "files.open",
+				"accel": "<ctl>o"
+			},
+			"Save": {
+				"command": "files.save [document.active]",
+				"id": "docuemnt.save",
+				"accel": "<ctl>s"
+			},
+			"Save As": {
+				"command": "files.save [document.active] [files.dialog false]",
+				"id": "docuemnt.save_as",
+				"accel": "<ctl><shift>s"
+			}
+		}
+	},
+	"plugins": {
+		"files": {
+			"name": "Files",
+			"description": "Provides file operations.",
+			"enabled": true
+		}
+	}
+}
