@@ -1,0 +1,20 @@
+{
+	"theme" : "Monokai",
+	"plugins": {
+		"syntax": {
+			"name": "Syntax",
+			"description": "Syntax highlighting.",
+			"enabled": true
+		}
+	},
+	"menu": {
+		"View": {
+			"Syntax": {
+				"menu_functions": [ "list_langs" ]
+			},
+			"Theme": {
+				"menu_functions": [ "list_themes" ]
+			}
+		}
+	}
+}
