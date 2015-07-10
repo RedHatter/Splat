@@ -30,25 +30,6 @@ public class FilesPlugin : GLib.Object
 {
 	Gee.Map<string,File> files;
 
-	// void save_state ()
-	// {
-	// 	var array = new string[files.size];
-	// 	foreach (var entry in files.entries)
-	// 		array[i] = @"$(entry.key):$(entry.value.get_parse_name ())";
-
-	// 		Preferences.set_array ("catche.files", array);
-	// }
-
-	// void load_state ()
-	// {
-	// 	var array = Preferences.get_array ("catche.files");
-	// 	for (var item in array)
-	// 	{
-	// 		var i = item.index_of (":");
-	// 		files[item[0:i]] = File.parse_name (item[i:item.length]);
-	// 	}
-	// }
-
 	public void init ()
 	{
 		files = new Gee.HashMap<string,File> ();
@@ -56,7 +37,7 @@ public class FilesPlugin : GLib.Object
 		PluginManager.instance.register_command ("files.save", save);
 		PluginManager.instance.register_command ("files.dialog", dialog);
 
-		// load_state ()
+		load_cache ();
 	}
 
 	/*
@@ -106,6 +87,7 @@ public class FilesPlugin : GLib.Object
 			string id = PluginManager.instance.call_command ("document.new", new string[]{file.get_basename ()});
 			PluginManager.instance.call_command ("document.insert", new string[]{id, (string) contents});
 			files[id] = file;
+			cache (id);
 			return id;
 		} catch (Error e) {
 			stdout.printf ("Error: %s\n", e.message);
@@ -114,6 +96,50 @@ public class FilesPlugin : GLib.Object
 		// save_state ();
 
 		return null;
+	}
+
+	void cache (string id)
+	{
+		try
+		{
+			var file = File.new_for_path (@"./cache/files");
+			var dir = file.get_parent ();
+			if (!dir.query_exists ())
+				dir.make_directory_with_parents ();
+
+			var os = file.append_to (FileCreateFlags.NONE);
+			os.write (@"$id:$(files[id].get_parse_name ())\n".data);
+			os.close ();
+		} catch (Error e)
+		{
+			stdout.puts (@"Error in Files' cache: $(e.message)");
+		}
+	}
+
+	void load_cache ()
+	{
+		try
+		{
+			var file = File.new_for_path (@"./cache/files");
+			if (!file.query_exists ())
+				return;
+
+			char[] contents;
+			file.load_contents (null, out contents, null);
+
+			var lines = ((string) contents).split ("\n");
+			foreach (var line in lines)
+			{
+				var i = line.index_of (":");
+				if (i < 1)
+					continue;
+
+				files [line[0:i]] = File.parse_name (line[i:line.length]);
+			}
+		} catch (Error e)
+		{
+			stdout.puts (@"Error in Files load_cache: $(e.message)");
+		}
 	}
 
 	/*

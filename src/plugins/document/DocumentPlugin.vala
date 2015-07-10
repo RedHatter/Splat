@@ -33,14 +33,16 @@ public class DocumentPlugin : GLib.Object
 	}
 
 	/*
-	 *  Usage: document.new [title=Untitled]
+	 *  Usage: document.new [title=Untitled] [id?]
 	 *   Creates a new document named [title].
+	 *   If [id] is set will attempt to load contents from cache.
 	 *   Returns the document id.
 	 *
 	 */
 	public string? new_view (string[] args)
 	{
 		var title = args[0] != null ? args[0] : "Untitled";
+		// var panel = args[1] == new DocumentPanel (title) : new DocumentPanel.from_cache (title, args[1]);
 		var panel = new DocumentPanel (title);
 		var font = @"$(Preferences.instance.get_string ("font_face")) $(Preferences.instance.get_int ("font_size"))";
 		panel.doc.override_font (Pango.FontDescription.from_string (font));
