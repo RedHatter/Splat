@@ -53,8 +53,8 @@ public class libsplat.Preferences : GLib.Object
 		{
 			// Load settings file
 			model = new Json.Parser ();
-			if (File.new_for_path ("./settings.json").query_exists ())
-				model.load_from_file ("./settings.json");
+			if (File.new_for_path (Paths.settings).query_exists ())
+				model.load_from_file (Paths.settings);
 			else
 				model.load_from_data ("{ \"plugins\": {} }");
 		} catch (Error e)
@@ -249,7 +249,7 @@ public class libsplat.Preferences : GLib.Object
 			Json.Generator generator = new Json.Generator ();
 			generator.set_root (model.get_root ());
 			generator.set_pretty (true);
-			generator.to_file ("./settings.json");
+			generator.to_file (Paths.settings);
 		} catch (Error e)
 		{
 			stdout.printf ("Error in Preferences.write: %s\n", e.message);

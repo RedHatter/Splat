@@ -20,7 +20,7 @@
 
 /*
 	TODO: Implement language context, and import from other language.
-	Fix over lapping tags (vala return types?). Load default theme.
+	Fix over lapping tags (vala return types?). Guess language from file name.
 	Restyle on delete. Asyc styling.
 */
 
@@ -107,7 +107,7 @@ public class SyntaxPlugin : GLib.Object
 
 	public Gee.ArrayList<Preferences.ItemInfo?> load_themes () throws Error
 	{
-	var d = Dir.open("./themes");
+	var d = Dir.open(Paths.files + "/themes");
 	string file;
 	var items = new Gee.ArrayList<Preferences.ItemInfo?> ();
 	var default_name = Preferences.instance.get_string ("theme");
@@ -117,7 +117,7 @@ public class SyntaxPlugin : GLib.Object
 		theme.load_from_data ("{}");
 
 		var sublime = new Json.Parser ();
-		sublime.load_from_file (@"./themes/$file");
+		sublime.load_from_file (@"$(Paths.files)/themes/$file");
 		translate_theme (sublime, theme);
 
 		string name = theme.get_root ().get_object ().get_member ("name").get_string ();
@@ -139,13 +139,13 @@ public class SyntaxPlugin : GLib.Object
 
 	public Gee.List<Preferences.ItemInfo?> load_langs () throws Error
 	{
-		var d = Dir.open("./langs");
+		var d = Dir.open(Paths.files + "/langs");
 		string file;
 		var items = new Gee.ArrayList<Preferences.ItemInfo?> ();
 		while ((file = d.read_name()) != null)
 		{
 			var lang = new Json.Parser ();
-			lang.load_from_file (@"./langs/$file");
+			lang.load_from_file (@"$(Paths.files)/langs/$file");
 			string scope = lang.get_root ().get_object ().get_member ("scopeName").get_string ();
 			string name = lang.get_root ().get_object ().get_member ("name").get_string ();
 			langs[scope] = lang;

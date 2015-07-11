@@ -28,7 +28,7 @@
 
 using Gee;
 
-extern void splat_load_plugin (string name);
+extern void splat_load_plugin (string dir, string name);
 extern Object splat_create_object ();
 extern void splat_close_plugin ();
 extern GLib.Resource splat_get_resource ();
@@ -75,7 +75,7 @@ public class libsplat.PluginManager : GLib.Object
 		{
 			// Load plugins
 			string file;
-			var d = Dir.open("./plugins");
+			var d = Dir.open(Paths.plugins);
 			while ((file = d.read_name()) != null)
 			{
 				// Is plugin disabled or new?
@@ -93,7 +93,7 @@ public class libsplat.PluginManager : GLib.Object
 					continue;
 
 				// Load the .so
-				splat_load_plugin (file);
+				splat_load_plugin (Paths.plugins + "/" + file, name);
 
 				if (merge)
 				{

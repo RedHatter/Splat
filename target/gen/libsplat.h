@@ -26,6 +26,17 @@ G_BEGIN_DECLS
 typedef struct _libsplatPanel libsplatPanel;
 typedef struct _libsplatPanelIface libsplatPanelIface;
 
+#define TYPE_PATHS (paths_get_type ())
+#define PATHS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_PATHS, Paths))
+#define PATHS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_PATHS, PathsClass))
+#define IS_PATHS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_PATHS))
+#define IS_PATHS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_PATHS))
+#define PATHS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_PATHS, PathsClass))
+
+typedef struct _Paths Paths;
+typedef struct _PathsClass PathsClass;
+typedef struct _PathsPrivate PathsPrivate;
+
 #define LIBSPLAT_TYPE_PLUGIN_MANAGER (libsplat_plugin_manager_get_type ())
 #define LIBSPLAT_PLUGIN_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), LIBSPLAT_TYPE_PLUGIN_MANAGER, libsplatPluginManager))
 #define LIBSPLAT_PLUGIN_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), LIBSPLAT_TYPE_PLUGIN_MANAGER, libsplatPluginManagerClass))
@@ -57,6 +68,15 @@ struct _libsplatPanelIface {
 	void (*set_title) (libsplatPanel* self, const gchar* value);
 	const gchar* (*get_command) (libsplatPanel* self);
 	void (*set_command) (libsplatPanel* self, const gchar* value);
+};
+
+struct _Paths {
+	GObject parent_instance;
+	PathsPrivate * priv;
+};
+
+struct _PathsClass {
+	GObjectClass parent_class;
 };
 
 struct _libsplatPluginManager {
@@ -91,6 +111,13 @@ const gchar* libsplat_panel_get_title (libsplatPanel* self);
 void libsplat_panel_set_title (libsplatPanel* self, const gchar* value);
 const gchar* libsplat_panel_get_command (libsplatPanel* self);
 void libsplat_panel_set_command (libsplatPanel* self, const gchar* value);
+GType paths_get_type (void) G_GNUC_CONST;
+Paths* paths_new (void);
+Paths* paths_construct (GType object_type);
+const gchar* paths_get_settings (void);
+const gchar* paths_get_cache (void);
+const gchar* paths_get_plugins (void);
+const gchar* paths_get_files (void);
 GType libsplat_plugin_manager_get_type (void) G_GNUC_CONST;
 void libsplat_plugin_manager_load_plugins (libsplatPluginManager* self);
 void libsplat_plugin_manager_open_panel (libsplatPluginManager* self, libsplatPanel* panel);

@@ -72,7 +72,7 @@ class UIManager : GLib.Object
 
 		try
 		{
-			File file = File.new_for_path ("./main.ui");
+			File file = File.new_for_path (Paths.cache + "/main.ui");
 			FileOutputStream os = file.replace (null, true, FileCreateFlags.NONE);
 			os.write (xml.data);
 		} catch (Error e)
@@ -86,7 +86,7 @@ class UIManager : GLib.Object
 	{
 		loading = true;
 
-		var builder = new Gtk.Builder.from_file ("./main.ui");
+		var builder = new Gtk.Builder.from_file (Paths.cache + "/main.ui");
 		var root = builder.get_object ("root") as BuildableList;
 		foreach (var obj in root)
 		{
@@ -367,6 +367,7 @@ class UIManager : GLib.Object
 	public void open_panel (libsplat.Panel panel)
 	{
 		var ctn = new PanelContainer (panel);
+		weak PanelContainer weak_ctn = ctn;
 
 		// Drag button
 		var handle = new Button.from_icon_name ("view-grid-symbolic", IconSize.BUTTON);
@@ -377,7 +378,7 @@ class UIManager : GLib.Object
 		});
 		handle.button_release_event.connect ((e) =>
 		{
-			drop ((int) e.x_root, (int) e.y_root, ctn);
+			drop ((int) e.x_root, (int) e.y_root, weak_ctn);
 			hide_hotspots ();
 			return false;
 		});
@@ -386,13 +387,13 @@ class UIManager : GLib.Object
 
 		// Pop button
 		var pop = new Button.from_icon_name ("go-up-symbolic", IconSize.BUTTON);
-		pop.clicked.connect ((e) => window (ctn));
+		pop.clicked.connect ((e) => window (weak_ctn));
 		pop.visible = true;
 		ctn.add_handle (pop);
 
 		// close button
 		var close = new Button.from_icon_name ("window-close-symbolic", IconSize.BUTTON);
-		close.clicked.connect ((e) => this.close (ctn));
+		close.clicked.connect ((e) => this.close (weak_ctn));
 		close.visible = true;
 		ctn.add_handle (close);
 

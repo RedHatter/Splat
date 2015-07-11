@@ -29,31 +29,15 @@
 #include <string.h> 
 #include <gio/gio.h>
 
-char *remove_ext(char* mystr)
-{
-	char *retstr;
-	if ((retstr = malloc (strlen (mystr) + 1)) == NULL)
-		return NULL;
-	strcpy (retstr, mystr);
-	char *lastdot = strrchr (retstr, '.');
-	if (lastdot != NULL)
-		*lastdot = '\0';
-	return retstr;
-}
 
-void *plugin;
-char *name;
-splat_load_plugin (char dir[])
+char* name;
+void* plugin;
+splat_load_plugin (char dir[], char plugin_name[])
 {
-	printf("Loading %s\n", dir);
-	name = remove_ext (dir);
+	printf("Loading %s\n", plugin_name);
+	name = plugin_name;
 
-	// Load plugin so
-	char *lib_str = malloc (strlen (dir) + 9);
-	strcpy (lib_str, "plugins/");
-	strcat (lib_str, dir);
-	plugin = dlopen(lib_str, RTLD_NOW|RTLD_NODELETE);
-	free (lib_str);
+	plugin = dlopen(dir, RTLD_NOW|RTLD_NODELETE);
 	if (!plugin)
 	{
 		fputs (dlerror(), stderr);

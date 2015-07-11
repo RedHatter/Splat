@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-pkgs="--pkg gtk+-3.0 --pkg gee-0.8 --pkg json-glib-1.0"
+pkgs="--pkg gtk+-3.0 --pkg gee-0.8 --pkg json-glib-1.0 --pkg posix"
 
 lib ()
 {
@@ -31,7 +31,7 @@ core ()
 
 	if $contiune; then
 		echo "Compiling core"
-		valac --vapidir gen $pkgs --pkg libsplat -g -o splat ../src/core/* -X -ldl -X -Igen -X -L. -X -lsplat -X -Wl,-rpath=$(pwd) -X -rdynamic 
+		valac --vapidir gen $pkgs --pkg libsplat -g -o splat ../src/core/* -X -ldl -X -Igen -X -L. -X -lsplat -X -rdynamic 
 	fi
 }
 
@@ -67,17 +67,17 @@ plugins ()
 res ()
 {
 	echo "Copying resources."
-	for f in ../res/* ; do
-		if [ $f -nt ./$(basename $f) ]; then
-			echo "$f => target/$(basename $f)"
-			cp -r $f ./
+	for f in ../res/* ../res/**/* ; do
+		target="${f:7}"
+		if [ "$f" -nt "$target" ]; then
+			echo "$f => $target"
+			cp -r $f $target
 		fi
 	done
 }
 
 if [ "$1" = "run" ]; then
-	cd target
-	./splat
+	LD_LIBRARY_PATH=target:target/plugins target/splat
 elif [ "$1" = "clean" ]; then
 	rm -r target
 elif [ "$1" = "debug" ]; then
@@ -86,6 +86,11 @@ elif [ "$1" = "debug" ]; then
 elif [ "$1" = "install" ]; then
 	mkdir /opt/splat
 	rsync -rv --exclude=gen target/* /opt/splat
+	echo "LD_LIBRARY_PATH=target:target/plugins target/splat" > /usr/bin/splat
+	chmod +x /usr/bin/splat
+elif [ "$1" = "uninstall" ]; then
+	rm -r /opt/splat
+	rm /usr/bin/splat
 else
 	mkdir -p target/plugins
 	mkdir -p target/temp

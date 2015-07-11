@@ -1,1 +1,1 @@
---pkg document -X -l:plugins/document.so
+--pkg document -X -Lplugins -X -l:document.so

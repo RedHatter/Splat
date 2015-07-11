@@ -48,3 +48,11 @@ namespace libsplat {
 		public signal void activate ();
 	}
 }
+[CCode (cheader_filename = "libsplat.h")]
+public class Paths : GLib.Object {
+	public Paths ();
+	public static string cache { get; }
+	public static string files { get; }
+	public static string plugins { get; }
+	public static string settings { get; }
+}

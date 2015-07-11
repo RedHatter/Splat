@@ -22,6 +22,7 @@
  *  Saving and loading files.
  *
  *	TODO: Recently open files. Open dialog in active document directory.
+ *        Drag and drop files.
  */
 
 using libsplat;
@@ -102,7 +103,7 @@ public class FilesPlugin : GLib.Object
 	{
 		try
 		{
-			var file = File.new_for_path (@"./cache/files");
+			var file = File.new_for_path (@"$(Paths.cache)/files");
 			var dir = file.get_parent ();
 			if (!dir.query_exists ())
 				dir.make_directory_with_parents ();
@@ -120,7 +121,7 @@ public class FilesPlugin : GLib.Object
 	{
 		try
 		{
-			var file = File.new_for_path (@"./cache/files");
+			var file = File.new_for_path (@"$(Paths.cache)/files");
 			if (!file.query_exists ())
 				return;
 

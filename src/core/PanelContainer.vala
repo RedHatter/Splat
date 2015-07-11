@@ -25,7 +25,7 @@ using Gtk;
 
 class PanelContainer : Buildable, Overlay
 {
-	libsplat.Panel panel;
+	weak libsplat.Panel panel;
 	Container overlay;
 
 	public string command

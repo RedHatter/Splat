@@ -57,7 +57,7 @@ class DocumentPanel : libsplat.Panel, Gtk.ScrolledWindow
 
 		try
 		{
-			var file = File.new_for_path (@"./cache/document/$id");
+			var file = File.new_for_path (@"$(Paths.cache)/document/$id");
 			if (file.query_exists ())
 			{
 				char[] contents;
@@ -123,7 +123,7 @@ class DocumentPanel : libsplat.Panel, Gtk.ScrolledWindow
 	{
 		try
 		{
-			var file = File.new_for_path (@"./cache/document/$id");
+			var file = File.new_for_path (@"$(Paths.cache)/document/$id");
 			var dir = file.get_parent ();
 			if (!dir.query_exists ())
 				dir.make_directory_with_parents ();
