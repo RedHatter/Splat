@@ -107,6 +107,7 @@ public class HistoryPlugin : GLib.Object
 		if (panel.parent != null)
 			panel.parent.remove (panel);
 
+		panel.visible = true;
 		PluginManager.instance.open_panel (panel);
 		return null;
 	}

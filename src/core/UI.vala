@@ -207,7 +207,8 @@ class UIManager : GLib.Object
 		if (ctn.parent == nb)
 			return;
 
-		close (ctn);
+		var owned_ctn = ctn;
+		close (owned_ctn);
 
 		ctn.visible = true;
 		nb.append_page (ctn, ctn.get_title ());
@@ -269,7 +270,8 @@ class UIManager : GLib.Object
 	 */
 	public void window (PanelContainer ctn)
 	{
-		close (ctn);
+		var owned_ctn = ctn;
+		close (owned_ctn);
 
 		var win = new Window (app);
 		windows.add (win);
