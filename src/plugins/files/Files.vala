@@ -94,8 +94,6 @@ public class FilesPlugin : GLib.Object
 			stdout.printf ("Error: %s\n", e.message);
 		}
 
-		// save_state ();
-
 		return null;
 	}
 

@@ -81,8 +81,7 @@ if [ "$1" = "run" ]; then
 elif [ "$1" = "clean" ]; then
 	rm -r target
 elif [ "$1" = "debug" ]; then
-	cd target
-	gdb splat
+	LD_LIBRARY_PATH=target:target/plugins gdb target/splat
 elif [ "$1" = "install" ]; then
 	mkdir /opt/splat
 	rsync -rv --exclude=gen target/* /opt/splat

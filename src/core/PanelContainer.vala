@@ -27,6 +27,7 @@ class PanelContainer : Buildable, Overlay
 {
 	weak libsplat.Panel panel;
 	Container overlay;
+	Label title;
 
 	public string command
 	{
@@ -88,7 +89,7 @@ class PanelContainer : Buildable, Overlay
 			Allocation allocation;
 			int x, y;
 			overlay.get_allocation (out allocation);
-			events.translate_coordinates (overlay, (int) e.x, (int) e.y, out x, out y);
+			overlay.parent.translate_coordinates (overlay, (int) e.x, (int) e.y, out x, out y);
 			if (x > allocation.width || x < 0 || y > allocation.height || y < 0)
 				overlay.visible = false;
 
@@ -96,16 +97,16 @@ class PanelContainer : Buildable, Overlay
 		});
 	}
 
-	public void add_handle (Gtk.Widget widget)
+	public void add_handle (Widget widget)
 	{
 		overlay.add (widget);
 	}
 
-	public Gtk.Widget get_title ()
+	public Widget get_title ()
 	{
-		var label = new Gtk.Label (panel.title);
-		panel.notify["title"].connect((s, p) => label.label = panel.title);
+		title = new Label (panel.title);
+		panel.notify["title"].connect((s, p) => title.label = panel.title);
 
-		return label;
+		return title;
 	}
 }

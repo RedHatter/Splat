@@ -60,7 +60,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  find_panel
+	 *  search.panel
 	 *   Opens find panel.
 	 */
 	public string? search_panel (string[] args)
@@ -70,7 +70,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  set_flags [flag] ...
+	 *  search.set_flags [flag] ...
 	 *   Set all [flag]s to true.
 	 *   flags
 	 *   -----
@@ -108,7 +108,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  clean_flags [flag] ...
+	 *  search.clear_flags [flag] ...
 	 *   Set all [flag]s to false.
 	 *   flags
 	 *   flags
@@ -168,7 +168,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  set_search [search] [replace]
+	 *  search.set_search [search] [replace]
 	 *   [search] the string to search for.
 	 *   [replace] string to replace with.
 	 */
@@ -201,7 +201,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  find_next [id] [pos=?]
+	 *  search.find_next [id] [pos=?]
 	 *   Use options set in set_search to find next string.
 	 *   [pos] defaults to last match or cursor position.
 	 */
@@ -321,7 +321,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  find_prv [id] [pos=?]
+	 *  search.find_prv [id] [pos=?]
 	 *   Use options set in set_search to find previous string.
 	 *   [pos] defaults to last match or cursor position.
 	 */
@@ -415,7 +415,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  replace_all [id]
+	 *  search.replace_all [id]
 	 *   Use options set in set_search to replace all occurrences of the search string.
 	 */
 	public string? replace_all (string[] args)
@@ -604,7 +604,7 @@ public class SearchPlugin : GLib.Object
 	}
 
 	/*
-	 *  replace [id] [pos=?]
+	 *  search.replace [id] [pos=?]
 	 *   Use options set in set_search to find and replace next string.
 	 *   [pos] defaults to last match or cursor position.
 	 */
