@@ -22,7 +22,7 @@
  *  Saving and loading files.
  *
  *	TODO: Recently open files. Open dialog in active document directory.
- *        Drag and drop files.
+ *        Drag and drop files. Open multiple.
  */
 
 using libsplat;
@@ -54,14 +54,23 @@ public class FilesPlugin : GLib.Object
 			if (id == null)
 				return null;
 
-			File file = args[1] == null ? files[id] : File.new_for_commandline_arg (args[1]);
-			if (file == null)
-				file = File.new_for_commandline_arg (PluginManager.instance.call_command ("files.dialog", new string[]{"false"}));
+			File file;
+			if (args[1] == null)
+			{
+				file = files[id];
+				if (file == null)
+					file = File.new_for_commandline_arg (PluginManager.instance.call_command ("files.dialog", new string[]{"false"}));
+			} else
+				file = File.new_for_commandline_arg (args[1]);
 
 			string contents = PluginManager.instance.call_command ("document.contents", new string[]{id});
 			FileOutputStream os = file.replace (null, false, FileCreateFlags.NONE);
 			DataOutputStream dos = new DataOutputStream (os);
 			dos.put_string (contents);
+
+			files[id] = file;
+			cache (id);
+			PluginManager.instance.call_command ("document.rename", new string[]{id, file.get_basename ()});
 		} catch (Error e)
 		{
 			stdout.printf ("Error: %s\n", e.message);
@@ -142,20 +151,29 @@ public class FilesPlugin : GLib.Object
 	}
 
 	/*
-	 *  Usage: dialog [isOpen=true]
+	 *  Usage: dialog [isOpen=true] [id?]
 	 *   Returns the path to the file the user picked.
 	 */
+	string last_folder;
 	public string? dialog (string[] args)
 	{
-		var is_open = args[0] == "false" ? false : true;
+		var is_open = args[1] == "false" ? false : true;
 		Gtk.FileChooserDialog chooser = new Gtk.FileChooserDialog (
 			is_open ? "Open file" : "Save file", null, Gtk.FileChooserAction.SAVE,
 			"_Cancel", Gtk.ResponseType.CANCEL,
 			is_open ? "_Open" : "_Save", Gtk.ResponseType.ACCEPT);
+		var id = args[1] == null ? PluginManager.instance.call_command ("document.active") : args[1];
+		if (files.has_key (id))
+			chooser.set_current_folder (files[id].get_path ());
+		else if (last_folder != null)
+			chooser.set_current_folder (last_folder);
 
 		string return_val = null;
 		if (chooser.run () == Gtk.ResponseType.ACCEPT)
+		{
 			return_val = chooser.get_uris ().nth_data (0);
+			last_folder = return_val[0:return_val.last_index_of ("/")];
+		}
 
 		chooser.close ();
 

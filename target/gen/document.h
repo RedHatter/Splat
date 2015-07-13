@@ -62,6 +62,7 @@ gchar* document_plugin_insert (DocumentPlugin* self, gchar** args, int args_leng
 gchar* document_plugin_delete (DocumentPlugin* self, gchar** args, int args_length1);
 gchar* document_plugin_contents (DocumentPlugin* self, gchar** args, int args_length1);
 gchar* document_plugin_active (DocumentPlugin* self, gchar** args, int args_length1);
+gchar* document_plugin_rename (DocumentPlugin* self, gchar** args, int args_length1);
 GtkTextView* document_plugin_get_view (DocumentPlugin* self, const gchar* id);
 gchar* document_plugin_get_id_by_index (DocumentPlugin* self, gint index);
 void document_plugin_set_active (DocumentPlugin* self, const gchar* id);

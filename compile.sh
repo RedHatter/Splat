@@ -85,7 +85,7 @@ elif [ "$1" = "debug" ]; then
 elif [ "$1" = "install" ]; then
 	mkdir /opt/splat
 	rsync -rv --exclude=gen target/* /opt/splat
-	echo "LD_LIBRARY_PATH=target:target/plugins target/splat" > /usr/bin/splat
+	echo "LD_LIBRARY_PATH=/opt/splat:/opt/splat/plugins /opt/splat/splat" > /usr/bin/splat
 	chmod +x /usr/bin/splat
 elif [ "$1" = "uninstall" ]; then
 	rm -r /opt/splat

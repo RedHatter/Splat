@@ -11,6 +11,7 @@ public class DocumentPlugin : GLib.Object {
 	public void init ();
 	public string? insert (string[] args);
 	public string? new_view (string[] args);
+	public string? rename (string[] args);
 	public void set_active (string id);
 	public string active_id { get; private set; }
 }

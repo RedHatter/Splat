@@ -8,12 +8,12 @@
 			},
 			"Save": {
 				"command": "files.save [document.active]",
-				"id": "docuemnt.save",
+				"id": "document.save",
 				"accel": "<ctl>s"
 			},
 			"Save As": {
-				"command": "files.save [document.active] [files.dialog false]",
-				"id": "docuemnt.save_as",
+				"command": "files.save [document.active] [files.dialog false [document.active]]",
+				"id": "document.save_as",
 				"accel": "<ctl><shift>s"
 			}
 		}

@@ -30,6 +30,7 @@ public class DocumentPlugin : GLib.Object
 		PluginManager.instance.register_command ("document.insert", insert);
 		PluginManager.instance.register_command ("document.contents", contents);
 		PluginManager.instance.register_command ("document.active", active);
+		PluginManager.instance.register_command ("document.rename", rename);
 	}
 
 	/*
@@ -127,6 +128,22 @@ public class DocumentPlugin : GLib.Object
 	public string? active (string[] args)
 	{
 		return active_id;
+	}
+
+	/*
+	 *  Usage: rename [id] [title]
+	 *   Renames the document specified by [id] to [title].
+	 */
+	public string? rename (string[] args)
+	{
+		var id = args[0];
+		var title = args[1];
+		if (id == null || title == null)
+			return null;
+
+		DocumentPanel.get (id).title = title;
+
+		return null;
 	}
 
 	public Gtk.TextView get_view (string id)
