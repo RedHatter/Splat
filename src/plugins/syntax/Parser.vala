@@ -86,13 +86,28 @@ class Parser
 			if (theme == null || lang == null)
 				return;
 
+			// Ending line
 			int line = pos.get_line ();
 
 			int count = new_text.split ("\n").length-1;
-			if (count != 0)
-				stack.update (line+count, count);
+			if (count < 1)
+				count = 0;
+			else
+				stack.update (line, count);
 
-			try { invalidate (line); }
+			try
+			{
+				for (var i = count; i >= 0; i--)
+				{
+					Gtk.TextIter start, end;
+					doc.buffer.get_iter_at_line (out start, line - i);
+					doc.buffer.get_iter_at_line (out end, line - i);
+					if (!end.ends_line ())
+						end.forward_to_line_end ();
+
+					invalidate (line - i);
+				}
+			}
 			catch (RegexError e) { stdout.puts (@"Error in Parser constructor: $(e.message)\n"); }
 		});
 	}

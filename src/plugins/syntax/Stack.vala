@@ -26,7 +26,7 @@ class Stack
 		public Json.Object obj;
 		public string scope;
 		public int line;
-		public int end;
+		public int end = -1;
 		public int offset;
 
 		private Json.Parser lang;
@@ -115,7 +115,7 @@ class Stack
 	{
 		_head = 0;
 		for (var i = 0; i < stack.size; i++)
-			if (stack[i].line < line && stack[i].end >= line
+			if (stack[i].line < line && (stack[i].end >= line || stack[i].end == -1)
 				&& stack[i].line > stack[_head].line)
 				_head = i;
 	}
