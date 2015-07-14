@@ -81,6 +81,25 @@ class Parser
 	{
 		this.doc = doc;
 
+		doc.buffer.delete_range.connect ((start, end) =>
+		{
+			if (theme == null || lang == null || stack == null)
+				return;
+
+			var line = start.get_line ();
+			var end_line = end.get_line ();
+			stack.update (line, line-end_line);
+			do
+				stack.clear_line (line++);
+			while (line <= end_line);
+		});
+		doc.buffer.delete_range.connect_after ((start, end) =>
+		{
+			if (theme == null || lang == null || stack == null)
+				return;
+
+			invalidate (start.get_line ());
+		});
 		doc.buffer.insert_text.connect_after ((ref pos, new_text, new_text_length) =>
 		{
 			if (theme == null || lang == null)
@@ -201,9 +220,9 @@ class Parser
 	int dirty_end = 0;
 	public void invalidate (int line) throws RegexError
 	{
-		Gtk.TextIter start, end;
+		Gtk.TextIter start;
 		doc.buffer.get_iter_at_line (out start, line);
-		doc.buffer.get_iter_at_line (out end, line);
+		var end = start;
 		if (!end.ends_line ())
 			end.forward_to_line_end ();
 
