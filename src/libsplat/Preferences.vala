@@ -298,13 +298,34 @@ public class libsplat.Preferences : GLib.Object
 			}
 
 			var item_obj = obj.get_member (name).get_object ();
-			if (item_obj.has_member ("command"))
+			if (item_obj.has_member ("id"))
 			{
-				var command = item_obj.get_member ("command").get_string ();
 				var id = item_obj.get_member ("id").get_string ();
 				var accel = item_obj.get_member ("accel");
 				var action = new SimpleAction (id, null);
-				action.activate.connect (() => PluginManager.instance.call_command_str (command));
+				if (item_obj.has_member ("command"))
+				{
+					var command = item_obj.get_member ("command").get_string ();
+					action.activate.connect (() => PluginManager.instance.call_command_str (command));
+				}
+				else if (item_obj.has_member ("enable") || item_obj.has_member ("disable"))
+				{
+					var default_bool = item_obj.has_member ("default") ? item_obj.get_member ("default").get_boolean () : true;
+					action = new SimpleAction.stateful (id, null, new Variant.boolean (default_bool));
+					var enable = item_obj.get_member ("enable").get_string ();
+					var disable = item_obj.get_member ("disable").get_string ();
+					action.activate.connect (() =>
+					{
+						bool b = !action.get_state ().get_boolean ();
+						if (b)
+							PluginManager.instance.call_command_str (enable);
+						else
+							PluginManager.instance.call_command_str (disable);
+
+						action.set_state (new Variant.boolean (b));
+					});
+				}
+
 				action.set_enabled (true);
 				group.add_action (action);
 				if (accel != null)

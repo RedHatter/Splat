@@ -13,10 +13,3 @@ public class Indent : GLib.Object {
 	public void set_size (int size);
 	public void set_spaces (bool enabled);
 }
-[CCode (cheader_filename = "indent.h")]
-public class Tabs : GLib.Object {
-	public Gtk.TextView doc;
-	public int size;
-	public bool tabs;
-	public Tabs ();
-}

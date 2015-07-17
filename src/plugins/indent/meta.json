@@ -3,7 +3,9 @@
 		"View" : {
 			"Indentation" : {
 				"Indent Using Spaces" : {
-					"command" : "indent.set_spaces [document.active]",
+					"enable" : "indent.set_spaces [document.active]",
+					"disable" : "indent.set_spaces [document.active] false",
+					"default" : false,
 					"id" : "indent.spaces"
 				},
 				"Tab width: 1" : {
