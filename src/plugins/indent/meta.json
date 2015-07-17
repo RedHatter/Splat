@@ -1,0 +1,38 @@
+{
+	"menu" : {
+		"View" : {
+			"Indentation" : {
+				"Indent Using Spaces" : {
+					"command" : "indent.set_spaces [document.active]",
+					"id" : "indent.spaces"
+				},
+				"Tab width: 1" : {
+					"command": "indent.set_size [document.active] 1",
+					"id": "indent.size.1"
+				},
+				"Tab width: 2" : {
+					"command": "indent.set_size [document.active] 2",
+					"id": "indent.size.2"
+				},
+				"Tab width: 4" : {
+					"command": "indent.set_size [document.active] 4",
+					"id": "indent.size.4"
+				},
+				"Tab width: 8" : {
+					"command": "indent.set_size [document.active] 8",
+					"id": "indent.size.8"
+				},
+				"Tab width: 16" : {
+					"command": "indent.set_size [document.active] 16",
+					"id": "indent.size.16"
+				}
+			}
+		}
+	},
+	"plugins": {
+		"intent": {
+			"name": "Intent",
+			"enabled": true
+		}
+	}
+}

@@ -6,6 +6,9 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <stdlib.h>
+#include <string.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
@@ -21,6 +24,28 @@ typedef struct _IndentPlugin IndentPlugin;
 typedef struct _IndentPluginClass IndentPluginClass;
 typedef struct _IndentPluginPrivate IndentPluginPrivate;
 
+#define TYPE_INDENT (indent_get_type ())
+#define INDENT(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_INDENT, Indent))
+#define INDENT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_INDENT, IndentClass))
+#define IS_INDENT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_INDENT))
+#define IS_INDENT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_INDENT))
+#define INDENT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_INDENT, IndentClass))
+
+typedef struct _Indent Indent;
+typedef struct _IndentClass IndentClass;
+typedef struct _IndentPrivate IndentPrivate;
+
+#define TYPE_TABS (tabs_get_type ())
+#define TABS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_TABS, Tabs))
+#define TABS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_TABS, TabsClass))
+#define IS_TABS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_TABS))
+#define IS_TABS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_TABS))
+#define TABS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_TABS, TabsClass))
+
+typedef struct _Tabs Tabs;
+typedef struct _TabsClass TabsClass;
+typedef struct _TabsPrivate TabsPrivate;
+
 struct _IndentPlugin {
 	GObject parent_instance;
 	IndentPluginPrivate * priv;
@@ -30,11 +55,42 @@ struct _IndentPluginClass {
 	GObjectClass parent_class;
 };
 
+struct _Indent {
+	GObject parent_instance;
+	IndentPrivate * priv;
+};
+
+struct _IndentClass {
+	GObjectClass parent_class;
+};
+
+struct _Tabs {
+	GObject parent_instance;
+	TabsPrivate * priv;
+	GtkTextView* doc;
+	gint size;
+	gboolean tabs;
+};
+
+struct _TabsClass {
+	GObjectClass parent_class;
+};
+
 
 GType indent_plugin_get_type (void) G_GNUC_CONST;
 void indent_plugin_init (IndentPlugin* self);
+gchar* indent_plugin_set_size (IndentPlugin* self, gchar** args, int args_length1);
+gchar* indent_plugin_set_spaces (IndentPlugin* self, gchar** args, int args_length1);
 IndentPlugin* indent_plugin_new (void);
 IndentPlugin* indent_plugin_construct (GType object_type);
+GType indent_get_type (void) G_GNUC_CONST;
+Indent* indent_new (GtkTextView* doc);
+Indent* indent_construct (GType object_type, GtkTextView* doc);
+void indent_set_spaces (Indent* self, gboolean enabled);
+void indent_set_size (Indent* self, gint size);
+GType tabs_get_type (void) G_GNUC_CONST;
+Tabs* tabs_new (void);
+Tabs* tabs_construct (GType object_type);
 
 
 G_END_DECLS
